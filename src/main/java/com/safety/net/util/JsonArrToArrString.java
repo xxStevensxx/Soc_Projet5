@@ -17,7 +17,7 @@ public class JsonArrToArrString {
 		for (int i = 0; i < jsonArr.size(); i++) {
 
 			String str = jsonArr.get(i).getAsString();
-			arr.add(str);;
+			arr.add(str);
 			arrayToRtrn = arr;
 
 		}
