@@ -1,6 +1,6 @@
 package com.safety.net.services;
 
-import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 
 //import java.util.Collection;
@@ -20,6 +20,7 @@ import com.safety.net.model.MedicalRecords;
 import com.safety.net.model.Persons;
 import com.safety.net.util.CheckDuplicateValue;
 import com.safety.net.util.ConvertStringToDate;
+import com.safety.net.util.JsonArrToArrString;
 
 @Service
 public class ListConstruct {
@@ -34,8 +35,10 @@ public class ListConstruct {
 
 	@Autowired
 	ConvertStringToDate cvrtStringToDate;
-
-//	Address optionalValue = new Address();
+	
+	@Autowired
+	JsonArrToArrString jsArrToArrStr;
+	
 	String adr;
 	String city;
 	String zip;
@@ -67,7 +70,7 @@ public class ListConstruct {
 				address.setZip(jsonObject.get("zip").getAsString());
 
 				person.setLocation(address);
-
+				
 				ListObject.listAddress.add(address);
 
 			} else {
@@ -109,8 +112,8 @@ public class ListConstruct {
 	}
 	
 	
-
-	public void constructMedicalRecords() throws ParseException {
+	
+	public void constructMedicalRecords(){
 
 		JsonArray jsonArray = jsonFile.getAsJsonArray("medicalrecords");
 
@@ -127,16 +130,29 @@ public class ListConstruct {
 			String lastname = jsonObject.get("lastName").getAsString();
 
 			person = checkDuplicateValue.checkPerson(name, lastname);
+			
 
-			if (person != null) {
+			if (person.getFirstName() != null && person.getLastName() != null) {
 
 				medicalRecord = new MedicalRecords();
 				birthDate = new BirthDate();
 				
+//				JsonArray arrayAllergies = jsonObject.get("allergies").getAsJsonArray();
+//				String allergies = arrayAllergies.getAsString();
 				
-//				medicalRecord.setAllergies(jsonObject.get("allergies").getAsJsonArray().getAsString());
-//				medicalRecord.setMedications(jsonObject.get("medications").getAsJsonArray().getAsString());
+//				JsonArray arrayMedic = jsonObject.get("medications").getAsJsonArray();
+				ArrayList<String> arrayMedic;
+				ArrayList<String> arrayAllergies;
 
+				
+				arrayMedic = jsArrToArrStr.arrlistStr(jsonObject.get("medications").getAsJsonArray());
+				arrayAllergies = jsArrToArrStr.arrlistStr(jsonObject.get("allergies").getAsJsonArray());
+
+			
+					
+				medicalRecord.setMedications(arrayMedic);
+				medicalRecord.setAllergies(arrayAllergies);
+				
 				date = cvrtStringToDate.convertStringToDate(jsonObject.get("birthdate").getAsString());
 				
 				birthDate.setBirthDate(date);
@@ -144,11 +160,13 @@ public class ListConstruct {
 				person.setMedicalRecord(medicalRecord);
 				person.setBirthDate(birthDate);
 
-				ListObject.listMedicalRecords.add(medicalRecord);
 				ListObject.listBirthDate.add(birthDate);
+				ListObject.listMedicalRecords.add(medicalRecord);
+
 
 			} else {
-
+					
+				constructPerson();
 				/*
 				 * Impossible qu'il soit null, du fait de la conception de l'app mais dans
 				 * l'évantualité placer un try catch
@@ -156,13 +174,12 @@ public class ListConstruct {
 
 			}
 
-			ListObject.listPersons.add(person);
 		}
 
 	}
 
 	@PostConstruct
-	public void callAllConstruct() throws ParseException {
+	public void callAllConstruct(){
 		jsonFile = dtr.readFile("src/main/resources/data.json");
 		constructPerson();
 		constructFireStations();
