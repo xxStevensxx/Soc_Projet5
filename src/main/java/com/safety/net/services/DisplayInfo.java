@@ -1,7 +1,10 @@
 package com.safety.net.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
 
 import com.safety.net.model.FireStations;
 import com.safety.net.model.ListObject;
@@ -12,7 +15,7 @@ import com.safety.net.model.MedicalRecords;
 import com.safety.net.model.Persons;
 
 
-
+@Service
 public class DisplayInfo {
 	
 	Persons persons;
@@ -24,6 +27,7 @@ public class DisplayInfo {
 	int phone;
 	String email;
 	int station;
+	Date birthDate;
 	
 	
 	public List<Persons> displayAllPersons(){
@@ -37,8 +41,9 @@ public class DisplayInfo {
 		
 		List<String> listOfThisPerson = new ArrayList<>();
 		
-		LastName = ListObject.listPersons.get(id).getLastName();
+		LastName =  ListObject.listPersons.get(id).getLastName();
 		firstName = ListObject.listPersons.get(id).getFirstName(); 
+		birthDate = ListObject.listBirthDate.get(id).getBirthDate();
 		address = ListObject.listPersons.get(id).getLocation().getAddress();
 		city = ListObject.listPersons.get(id).getLocation().getCity();
 		zip = ListObject.listPersons.get(id).getLocation().getZip();
@@ -48,9 +53,10 @@ public class DisplayInfo {
 		
 		listOfThisPerson.add(LastName);
 		listOfThisPerson.add(firstName);
-//		listOfThisPerson.add(address);
-//		listOfThisPerson.add(city);
-//		listOfThisPerson.add(zip);
+//		listOfThisPerson.add(birthDate);
+		listOfThisPerson.add(address);
+		listOfThisPerson.add(city);
+		listOfThisPerson.add(zip);
 		listOfThisPerson.add(email);
 		
 				return listOfThisPerson;
