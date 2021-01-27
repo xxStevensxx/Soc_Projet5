@@ -1,30 +1,28 @@
 package com.safety.net.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import java.util.ArrayList;
 
-@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class MedicalRecords {
 
-	private String medications;
-	private String allergies;
+	private ArrayList<String> medications;
+	private ArrayList<String> allergies;
 
 
 	
-	public String getMedications() {
+	public ArrayList<String> getMedications() {
 		return medications;
 	}
 
-	public void setMedications(String medications) {
-		this.medications = medications;
+	public void setMedications(ArrayList<String> medic) {
+		this.medications = medic;
 	}
 
-	public String getAllergies() {
+	public ArrayList<String> getAllergies() {
 		return allergies;
 	}
 
-	public void setAllergies(String allergies) {
-		this.allergies = allergies;
+	public void setAllergies(ArrayList<String> arrayAllergies) {
+		this.allergies = arrayAllergies;
 	}
 
 }
