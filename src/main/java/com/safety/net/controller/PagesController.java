@@ -19,7 +19,8 @@ import com.safety.net.services.ListConstruct;
 @RestController
 public class PagesController {
 	
-	DisplayInfo displayInfo = new DisplayInfo();
+	@Autowired
+	DisplayInfo displayInfo;
 	
 	@Autowired
 	ListConstruct listConstruct;
