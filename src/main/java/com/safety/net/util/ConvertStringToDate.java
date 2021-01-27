@@ -10,9 +10,18 @@ import org.springframework.stereotype.Component;
 public class ConvertStringToDate {
 	
 	
-	public Date convertStringToDate(String sDate) throws ParseException{
+	public Date convertStringToDate(String sDate) {
 		
-		Date date = new SimpleDateFormat("MM/dd/yyyy").parse(sDate);
+		Date date = null;
+		
+		try {
+			
+			date = new SimpleDateFormat("dd/MM/yyyy").parse(sDate);
+			
+		} catch (ParseException e) {
+			
+			e.printStackTrace();
+		}
 		
 				return date;
 	}
