@@ -13,13 +13,23 @@ public class JsonArrToArrString {
 
 		ArrayList<String> arr = new ArrayList<String>();
 		ArrayList<String> arrayToRtrn = null;
-
+		boolean b = false;
+	
+		
 		for (int i = 0; i < jsonArr.size(); i++) {
-
+			b = true;
 			String str = jsonArr.get(i).getAsString();
 			arr.add(str);
+			
 			arrayToRtrn = arr;
 
+		}
+		
+		
+		if (b == false) {
+			arr.add("None");
+			arrayToRtrn = arr;
+			
 		}
 		
 		return arrayToRtrn;
