@@ -5,7 +5,7 @@ public class Persons {
 	
 	private String firstName;
 	private String lastName;
-	private int phone;
+	private String phone;
 	private String email;
 	private Address location;
 	private MedicalRecords medicalRecord;
@@ -54,11 +54,11 @@ public class Persons {
 		this.lastName = lastName;
 	}
 
-	public int getPhone() {
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
