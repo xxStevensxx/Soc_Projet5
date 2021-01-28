@@ -1,8 +1,7 @@
 package com.safety.net.util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.stereotype.Component;
 
@@ -10,20 +9,13 @@ import org.springframework.stereotype.Component;
 public class ConvertStringToDate {
 	
 	
-	public Date convertStringToDate(String sDate) {
+	public LocalDate convertStringToDate(String sDate) {
 		
-		Date date = null;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/yyyy");
 		
-		try {
-			
-			date = new SimpleDateFormat("dd/MM/yyyy").parse(sDate);
-			
-		} catch (ParseException e) {
-			
-			e.printStackTrace();
-		}
-		
-				return date;
+		LocalDate date  = LocalDate.parse(sDate, formatter);
+
+			return date;
 	}
 
 }

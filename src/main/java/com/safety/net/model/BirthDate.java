@@ -1,19 +1,19 @@
 package com.safety.net.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class BirthDate {
 	
-	private Date birthDate;
+	private LocalDate birthDate;
 	
 	
 
-	public Date getBirthDate() {
+	public LocalDate getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
+	public void setBirthDate(LocalDate date) {
+		this.birthDate = date;
 	}
 
 }
