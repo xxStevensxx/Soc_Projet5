@@ -1,7 +1,7 @@
 package com.safety.net.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 //import java.util.Collection;
 
@@ -58,7 +58,7 @@ public class ListConstruct {
 
 			person.setFirstName(jsonObject.get("firstName").getAsString());
 			person.setLastName(jsonObject.get("lastName").getAsString());
-//			person.setPhone(jsonObject.get("phone").getAsInt());
+			person.setPhone(jsonObject.get("phone").getAsString());
 			person.setEmail(jsonObject.get("email").getAsString());
 
 			if (address == null) {
@@ -120,7 +120,7 @@ public class ListConstruct {
 		Persons person;
 		BirthDate birthDate;
 		MedicalRecords medicalRecord;
-		Date date;
+		LocalDate date;
 
 		for (int iterator = 0; iterator < jsonArray.size(); iterator++) {
 			JsonObject jsonObject = jsonArray.get(iterator).getAsJsonObject();
@@ -137,10 +137,6 @@ public class ListConstruct {
 				medicalRecord = new MedicalRecords();
 				birthDate = new BirthDate();
 				
-//				JsonArray arrayAllergies = jsonObject.get("allergies").getAsJsonArray();
-//				String allergies = arrayAllergies.getAsString();
-				
-//				JsonArray arrayMedic = jsonObject.get("medications").getAsJsonArray();
 				ArrayList<String> arrayMedic;
 				ArrayList<String> arrayAllergies;
 
@@ -148,12 +144,11 @@ public class ListConstruct {
 				arrayMedic = jsArrToArrStr.arrlistStr(jsonObject.get("medications").getAsJsonArray());
 				arrayAllergies = jsArrToArrStr.arrlistStr(jsonObject.get("allergies").getAsJsonArray());
 
-			
-					
+								
 				medicalRecord.setMedications(arrayMedic);
 				medicalRecord.setAllergies(arrayAllergies);
 				
-				date = cvrtStringToDate.convertStringToDate(jsonObject.get("birthdate").getAsString());
+				date =  cvrtStringToDate.convertStringToDate(jsonObject.get("birthdate").getAsString());
 				
 				birthDate.setBirthDate(date);
 
