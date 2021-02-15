@@ -1,6 +1,8 @@
 package com.safety.net.controller;
 
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import java.util.List;
 import java.util.Map;
@@ -17,30 +19,22 @@ import com.safety.net.services.ListConstruct;
 
 @RestController
 public class PagesController {
-	
 
 	@Autowired
 	DisplayInfo displayInfo;
 
 	@Autowired
 	DisplayInfo displayInfo;
-	
+
 	@Autowired
 	ListConstruct listConstruct;
-	
-	
+
 	@RequestMapping("/")
 	public String home() {
-		
+
 		return "Welcome to Safety Net!";
 	}
 
-	@RequestMapping(value = "/firestations", method = RequestMethod.GET)
-	public List<String> fireStations(@RequestParam("stationNumber") int id){
-		
-		return displayInfo.displayPplNearStation(id);
-		
-	}
 
 	@RequestMapping(value = "/firestation", method = RequestMethod.GET, produces = "application/json" )
 	public String fireStations(@RequestParam(name = "stationNumber", required = true) int id){
@@ -92,7 +86,6 @@ public class PagesController {
 		
 	}
 
-	
 }
 
 
