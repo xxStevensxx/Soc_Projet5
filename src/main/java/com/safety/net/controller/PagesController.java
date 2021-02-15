@@ -1,11 +1,7 @@
 package com.safety.net.controller;
 
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,9 +15,6 @@ import com.safety.net.services.ListConstruct;
 
 @RestController
 public class PagesController {
-
-	@Autowired
-	DisplayInfo displayInfo;
 
 	@Autowired
 	DisplayInfo displayInfo;
