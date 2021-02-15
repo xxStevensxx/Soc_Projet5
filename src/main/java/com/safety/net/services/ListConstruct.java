@@ -19,7 +19,7 @@ import com.safety.net.model.ListObject;
 import com.safety.net.model.MedicalRecords;
 import com.safety.net.model.Persons;
 import com.safety.net.util.CheckDuplicateValue;
-import com.safety.net.util.ConvertStringToDate;
+import com.safety.net.util.DateManager;
 import com.safety.net.util.JsonArrToArrString;
 
 @Service
@@ -34,7 +34,7 @@ public class ListConstruct {
 	CheckDuplicateValue checkDuplicateValue;
 
 	@Autowired
-	ConvertStringToDate cvrtStringToDate;
+	DateManager cvrtDate;
 	
 	@Autowired
 	JsonArrToArrString jsArrToArrStr;
@@ -45,6 +45,7 @@ public class ListConstruct {
 
 	boolean resultOfChkDuplicateVle = false;
 
+	
 	public void constructPerson() {
 
 		JsonArray jsonArray = jsonFile.getAsJsonArray("persons");
@@ -148,8 +149,9 @@ public class ListConstruct {
 				medicalRecord.setMedications(arrayMedic);
 				medicalRecord.setAllergies(arrayAllergies);
 				
-				date =  cvrtStringToDate.convertStringToDate(jsonObject.get("birthdate").getAsString());
-				
+				date =  cvrtDate.convertDate(jsonObject.get("birthdate").getAsString());
+//				Period age = cvrtDate.calculateAge(jsonObject.get("birthdate").getAsString());
+
 				birthDate.setBirthDate(date);
 
 				person.setMedicalRecord(medicalRecord);
@@ -166,7 +168,7 @@ public class ListConstruct {
 				 * Impossible qu'il soit null, du fait de la conception de l'app mais dans
 				 * l'évantualité placer un try catch
 				 */
-
+	
 			}
 
 		}
