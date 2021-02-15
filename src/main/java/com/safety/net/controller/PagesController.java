@@ -8,28 +8,22 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
-<<<<<<< Updated upstream
-import com.safety.net.model.FireStations;
-import com.safety.net.model.Persons;
-=======
-
->>>>>>> Stashed changes
 import com.safety.net.services.DisplayInfo;
 import com.safety.net.services.ListConstruct;
 
 @RestController
 public class PagesController {
 	
-<<<<<<< Updated upstream
-	DisplayInfo displayInfo = new DisplayInfo();
-=======
-	
+
 	@Autowired
 	DisplayInfo displayInfo;
->>>>>>> Stashed changes
+
+	@Autowired
+	DisplayInfo displayInfo;
 	
 	@Autowired
 	ListConstruct listConstruct;
@@ -40,14 +34,13 @@ public class PagesController {
 		
 		return "Welcome to Safety Net!";
 	}
-	
-<<<<<<< Updated upstream
-	@RequestMapping("/infoPersons")
-	public List<Persons> infoPersons() throws FileNotFoundException, IOException {
-				
-			return  displayInfo.displayAllPersons();
-=======
-	
+
+	@RequestMapping(value = "/firestations", method = RequestMethod.GET)
+	public List<String> fireStations(@RequestParam("stationNumber") int id){
+		
+		return displayInfo.displayPplNearStation(id);
+		
+	}
 
 	@RequestMapping(value = "/firestation", method = RequestMethod.GET, produces = "application/json" )
 	public String fireStations(@RequestParam(name = "stationNumber", required = true) int id){
@@ -61,7 +54,6 @@ public class PagesController {
 		
 		return displayInfo.childAlert(address).toString();
 		
->>>>>>> Stashed changes
 	}
 	
 	@RequestMapping(value = "/phoneAlert", method = RequestMethod.GET, produces = "application/json")
@@ -71,18 +63,12 @@ public class PagesController {
 		
 	}
 	
-<<<<<<< Updated upstream
-	@RequestMapping("/infoFireStations")
-	public List<FireStations> infoFireStations() throws FileNotFoundException, IOException {
-=======
 	@RequestMapping(value = "/fire", method = RequestMethod.GET, produces = "application/json")
 	public String fire(@RequestParam(name = "address", required = true) String address){
 		
 		return displayInfo.fireAdr(address).toString();
->>>>>>> Stashed changes
-		
-	}
-	
+
+  }
 	@RequestMapping(value = "/flood/stations", method = RequestMethod.GET, produces = "application/json")
 	public String flood(@RequestParam(name = "stations", required = true) List<Integer> stations){
 		
@@ -90,22 +76,14 @@ public class PagesController {
 		
 	}
 	
-<<<<<<< Updated upstream
-	@RequestMapping("/infoFireStations/{id}")
-	public List<Object> infoFireStation(@PathVariable int id) throws FileNotFoundException, IOException {
-=======
 	@RequestMapping(value = "/personInfo", method = RequestMethod.GET, produces = "application/json")
 	public String personInfo(@RequestParam(name = "firstName", required = true) String firstName, 
 			@RequestParam(name = "lastName", required = true) String lastName){
 		
 		return displayInfo.personInfo(firstName, lastName).toString();
->>>>>>> Stashed changes
 		
 	}
-<<<<<<< Updated upstream
 
-=======
-	
 	
 	@RequestMapping(value = "/communityEmail", method = RequestMethod.GET, produces = "application/json")
 	public String communityEmail(@RequestParam(name = "city", required = true) String  city){
@@ -113,7 +91,7 @@ public class PagesController {
 		return displayInfo.communityEmail(city).toString();
 		
 	}
->>>>>>> Stashed changes
+
 	
 }
 
@@ -127,27 +105,3 @@ public class PagesController {
 
 
 
-
-
-
-
-
-
-
-
-//@RequestMapping(value = "/toto")
-//public ResponseEntity<List<Persons>> fireStationsTest(){
-//	
-//	
-//	JsonObject result = new JsonObject();
-//	Persons p = new Persons();
-//	
-//	
-//	p.setFirstName("TOTOSet");
-//	
-//	result.addProperty("name", "TOTO");
-//	result.addProperty("age", 27);
-//	
-//	return  new ResponseEntity<>(ListObject.listPersons , HttpStatus.OK);
-//	
-//}

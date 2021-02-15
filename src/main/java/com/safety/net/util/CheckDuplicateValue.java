@@ -25,8 +25,8 @@ public class CheckDuplicateValue {
 	}
 	
 	
+	
 	public Persons checkPerson(String firstName, String lastName) {
-		
 		
 		Persons	person = ListObject.listPersons.stream()
 				.filter(predicate -> predicate.getFirstName().equals(firstName) &&
