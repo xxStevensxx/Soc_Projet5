@@ -1,7 +1,7 @@
 package com.safety.net.services;
 
-import java.text.ParseException;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 //import java.util.Collection;
 
@@ -19,7 +19,8 @@ import com.safety.net.model.ListObject;
 import com.safety.net.model.MedicalRecords;
 import com.safety.net.model.Persons;
 import com.safety.net.util.CheckDuplicateValue;
-import com.safety.net.util.ConvertStringToDate;
+import com.safety.net.util.DateManager;
+import com.safety.net.util.JsonArrToArrString;
 
 @Service
 public class ListConstruct {
@@ -33,15 +34,18 @@ public class ListConstruct {
 	CheckDuplicateValue checkDuplicateValue;
 
 	@Autowired
-	ConvertStringToDate cvrtStringToDate;
-
-//	Address optionalValue = new Address();
+	DateManager cvrtDate;
+	
+	@Autowired
+	JsonArrToArrString jsArrToArrStr;
+	
 	String adr;
 	String city;
 	String zip;
 
 	boolean resultOfChkDuplicateVle = false;
 
+	
 	public void constructPerson() {
 
 		JsonArray jsonArray = jsonFile.getAsJsonArray("persons");
@@ -55,7 +59,7 @@ public class ListConstruct {
 
 			person.setFirstName(jsonObject.get("firstName").getAsString());
 			person.setLastName(jsonObject.get("lastName").getAsString());
-//			person.setPhone(jsonObject.get("phone").getAsInt());
+			person.setPhone(jsonObject.get("phone").getAsString());
 			person.setEmail(jsonObject.get("email").getAsString());
 
 			if (address == null) {
@@ -67,7 +71,7 @@ public class ListConstruct {
 				address.setZip(jsonObject.get("zip").getAsString());
 
 				person.setLocation(address);
-
+				
 				ListObject.listAddress.add(address);
 
 			} else {
@@ -109,15 +113,15 @@ public class ListConstruct {
 	}
 	
 	
-
-	public void constructMedicalRecords() throws ParseException {
+	
+	public void constructMedicalRecords(){
 
 		JsonArray jsonArray = jsonFile.getAsJsonArray("medicalrecords");
 
 		Persons person;
 		BirthDate birthDate;
 		MedicalRecords medicalRecord;
-		Date date;
+		LocalDate date;
 
 		for (int iterator = 0; iterator < jsonArray.size(); iterator++) {
 			JsonObject jsonObject = jsonArray.get(iterator).getAsJsonObject();
@@ -127,42 +131,52 @@ public class ListConstruct {
 			String lastname = jsonObject.get("lastName").getAsString();
 
 			person = checkDuplicateValue.checkPerson(name, lastname);
+			
 
-			if (person != null) {
+			if (person.getFirstName() != null && person.getLastName() != null) {
 
 				medicalRecord = new MedicalRecords();
 				birthDate = new BirthDate();
 				
-				
-//				medicalRecord.setAllergies(jsonObject.get("allergies").getAsJsonArray().getAsString());
-//				medicalRecord.setMedications(jsonObject.get("medications").getAsJsonArray().getAsString());
+				ArrayList<String> arrayMedic;
+				ArrayList<String> arrayAllergies;
 
-				date = cvrtStringToDate.convertStringToDate(jsonObject.get("birthdate").getAsString());
 				
+				arrayMedic = jsArrToArrStr.arrlistStr(jsonObject.get("medications").getAsJsonArray());
+				arrayAllergies = jsArrToArrStr.arrlistStr(jsonObject.get("allergies").getAsJsonArray());
+
+								
+				medicalRecord.setMedications(arrayMedic);
+				medicalRecord.setAllergies(arrayAllergies);
+				
+				date =  cvrtDate.convertDate(jsonObject.get("birthdate").getAsString());
+//				Period age = cvrtDate.calculateAge(jsonObject.get("birthdate").getAsString());
+
 				birthDate.setBirthDate(date);
 
 				person.setMedicalRecord(medicalRecord);
 				person.setBirthDate(birthDate);
 
-				ListObject.listMedicalRecords.add(medicalRecord);
 				ListObject.listBirthDate.add(birthDate);
+				ListObject.listMedicalRecords.add(medicalRecord);
+
 
 			} else {
-
+					
+				constructPerson();
 				/*
 				 * Impossible qu'il soit null, du fait de la conception de l'app mais dans
 				 * l'évantualité placer un try catch
 				 */
-
+	
 			}
 
-			ListObject.listPersons.add(person);
 		}
 
 	}
 
 	@PostConstruct
-	public void callAllConstruct() throws ParseException {
+	public void callAllConstruct(){
 		jsonFile = dtr.readFile("src/main/resources/data.json");
 		constructPerson();
 		constructFireStations();
