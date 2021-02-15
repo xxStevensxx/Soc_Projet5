@@ -17,7 +17,7 @@ import com.safety.net.util.DateManager;
 
 @Service
 public class DisplayInfo {
-	
+
 	Gson gson = new Gson();
 
 	@Autowired
@@ -40,7 +40,6 @@ public class DisplayInfo {
 	ArrayList<String> medications;
 	
 	
-	
 
 	public JsonObject displayPplNearStation(int id) {
 
@@ -52,48 +51,65 @@ public class DisplayInfo {
 
 		JsonObject result = new JsonObject();
 
-		String fStationAdr = ListObject.listFireStations.get(id).getAddress().getAddress();
+		String fStationAdr = null;
 
 		child = 0;
 		adult = 0;
 
-		for (int i = 0; i < ListObject.listPersons.size(); i++) {
-			if (fStationAdr == ListObject.listPersons.get(i).getLocation().getAddress()) {
+		for (int i = 0; i < ListObject.listFireStations.size(); i++) {
 
-				listPplNearFstation = new JsonObject();
+			boolean next = false;
+			int fStationNb = ListObject.listFireStations.get(i).getStation();
 
-				LastName = ListObject.listPersons.get(i).getLastName();
-				firstName = ListObject.listPersons.get(i).getFirstName();
-				phone = ListObject.listPersons.get(i).getPhone();
+			if (id == fStationNb) {
 
-				birthDate = ListObject.listBirthDate.get(i).getBirthDate().toString();
-				age = dateManager.calculateAge(birthDate);
-
-				if (Integer.parseInt(age) <= 18) {
-
-					child++;
-				} else {
-
-					adult++;
-				}
-
-				address = ListObject.listPersons.get(i).getLocation().getAddress();
-				city = ListObject.listPersons.get(i).getLocation().getCity();
-				zip = ListObject.listPersons.get(i).getLocation().getZip();
-
-				listPplNearFstation.addProperty("firstName", firstName);
-				listPplNearFstation.addProperty("LastName", LastName);
-				listPplNearFstation.addProperty("birthDate", birthDate);
-				listPplNearFstation.addProperty("age", age);
-				listPplNearFstation.addProperty("address", address);
-				listPplNearFstation.addProperty("city", city);
-				listPplNearFstation.addProperty("zip", zip);
-				listPplNearFstation.addProperty("phone", phone);
-
-				listPplNearFstationRtrn.add(listPplNearFstation);
+				next = true;
+				fStationAdr = ListObject.listFireStations.get(i).getAddress().getAddress();
 
 			}
 
+			if (next == true) {
+				
+				for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
+
+					if (fStationAdr == ListObject.listPersons.get(iterator).getLocation().getAddress()) {
+
+						listPplNearFstation = new JsonObject();
+
+						LastName = ListObject.listPersons.get(iterator).getLastName();
+						firstName = ListObject.listPersons.get(iterator).getFirstName();
+						phone = ListObject.listPersons.get(iterator).getPhone();
+
+						birthDate = ListObject.listBirthDate.get(iterator).getBirthDate().toString();
+						age = dateManager.calculateAge(birthDate);
+
+						if (Integer.parseInt(age) <= 18) {
+
+							child++;
+						} else {
+
+							adult++;
+						}
+
+						address = ListObject.listPersons.get(iterator).getLocation().getAddress();
+						city = ListObject.listPersons.get(iterator).getLocation().getCity();
+						zip = ListObject.listPersons.get(iterator).getLocation().getZip();
+
+						listPplNearFstation.addProperty("firstName", firstName);
+						listPplNearFstation.addProperty("LastName", LastName);
+						listPplNearFstation.addProperty("birthDate", birthDate);
+						listPplNearFstation.addProperty("age", age);
+						listPplNearFstation.addProperty("address", address);
+						listPplNearFstation.addProperty("city", city);
+						listPplNearFstation.addProperty("zip", zip);
+						listPplNearFstation.addProperty("phone", phone);
+
+						listPplNearFstationRtrn.add(listPplNearFstation);
+
+					}
+				}
+			}
+			
 			result.add("Habitants", JsonParser.parseString(gson.toJson(listPplNearFstationRtrn)).getAsJsonArray());
 
 		}
@@ -148,7 +164,6 @@ public class DisplayInfo {
 	
 	
 	
-	
 
 	public JsonObject phoneAlert(int fireStationNumber) {
 
@@ -195,149 +210,188 @@ public class DisplayInfo {
 	
 	
 	
-	
-	
+
 	public JsonObject fireAdr(String address) {
-		
+
 		List<Object> listHabitant = new ArrayList<>();
 		List<Object> stationNb = new ArrayList<>();
 
 		JsonObject result = new JsonObject();
-		
-		
+
 		for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
-			
+
 			String adrPpl = ListObject.listPersons.get(iterator).getLocation().getAddress().replaceAll("\\s", "");
-			
+
 			if (address.replaceAll("\\s", "").contains(adrPpl)) {
-				
+
 				JsonObject habitant = new JsonObject();
-				
-				
+
 				habitant.addProperty("Nom", ListObject.listPersons.get(iterator).getLastName());
 				habitant.addProperty("phoneNumber", ListObject.listPersons.get(iterator).getPhone());
-				
+
 				String age = dateManager.calculateAge(ListObject.listBirthDate.get(iterator).getBirthDate().toString());
-				
+
 				habitant.addProperty("age", age);
-				
-				habitant.addProperty("medications", ListObject.listPersons.get(iterator).getMedicalRecord().getMedications().toString());
-				habitant.addProperty("allergies", ListObject.listPersons.get(iterator).getMedicalRecord().getAllergies().toString());
-				
+
+				habitant.addProperty("medications",
+						ListObject.listPersons.get(iterator).getMedicalRecord().getMedications().toString());
+				habitant.addProperty("allergies",
+						ListObject.listPersons.get(iterator).getMedicalRecord().getAllergies().toString());
+
 				listHabitant.add(habitant);
 
-				
 			}
 
 		}
-		
+
 		for (int iteratorBis = 0; iteratorBis < ListObject.listFireStations.size(); iteratorBis++) {
-			
-			if (address.replaceAll("\\s", "").contains(ListObject.listFireStations.get(iteratorBis).getAddress().getAddress().replaceAll("\\s", ""))) {
-				
-				
+
+			if (address.replaceAll("\\s", "").contains(
+					ListObject.listFireStations.get(iteratorBis).getAddress().getAddress().replaceAll("\\s", ""))) {
+
 				JsonObject StationNb = new JsonObject();
 				String station = String.valueOf(ListObject.listFireStations.get(iteratorBis).getStation());
-	
+
 				StationNb.addProperty("number", station);
-				
+
 				stationNb.add(StationNb);
-				
+
 			}
 		}
-		
+
 		result.add("Habitant", JsonParser.parseString(gson.toJson(listHabitant)).getAsJsonArray());
 		result.add("FireStation", JsonParser.parseString(gson.toJson(stationNb)).getAsJsonArray());
 
-		
+		return result;
+	}
+	
+	
+	
 
+	public JsonObject flood(int stations) {
+		
+		String fStationAdr = null;
+		boolean next = false;
+		JsonObject grpPplAdr;
+		List<Object> listGrpPplAdr = new ArrayList<>();
+		String age;
+		JsonObject result = new JsonObject();
+
+		for (int iterator = 0; iterator < ListObject.listFireStations.size(); iterator++) {
+						
+			if (stations == ListObject.listFireStations.get(iterator).getStation()) {
+				
+				next = true;
+				fStationAdr = ListObject.listFireStations.get(iterator).getAddress().getAddress();
+				
+			}
+		}
+		
+		
+		if(next == true ) {
+
+			for (int jterator = 0; jterator < ListObject.listPersons.size(); jterator++) {
+				
+				if (fStationAdr == ListObject.listPersons.get(jterator).getLocation().getAddress()) {
+					
+					grpPplAdr = new JsonObject();
+					
+					grpPplAdr.addProperty("address", ListObject.listPersons.get(jterator).getLocation().getAddress());
+					grpPplAdr.addProperty("firstName", ListObject.listPersons.get(jterator).getFirstName());
+					grpPplAdr.addProperty("lastName", ListObject.listPersons.get(jterator).getLastName());
+					grpPplAdr.addProperty("phone", ListObject.listPersons.get(jterator).getPhone());
+					
+					age = dateManager.calculateAge(ListObject.listBirthDate.get(jterator).getBirthDate().toString());
+					
+					grpPplAdr.addProperty("age", age);
+					grpPplAdr.addProperty("medications", ListObject.listMedicalRecords.get(jterator).getMedications().toString());
+					grpPplAdr.addProperty("allergies", ListObject.listMedicalRecords.get(jterator).getAllergies().toString());
+					
+					listGrpPplAdr.add(grpPplAdr);
+
+				}
+			}
+		}
+		
+		result.add("habitant", JsonParser.parseString(gson.toJson(listGrpPplAdr)).getAsJsonArray());
+		
+		
 				return result;
 	}
 	
 	
 	
-	public JsonObject flood(List<Integer> stations) {
-		
-//		A faire !!
 
-		return null;
-	}
-	
-	
-	
-	
 	public JsonObject personInfo(String firstName, String lastName) {
-		
+
 		JsonObject result = new JsonObject();
-		
+
 		JsonObject habitant;
 		List<Object> listHab = new ArrayList<>();
-		
+
 		for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
-			
+
 			String frstName = ListObject.listPersons.get(iterator).getFirstName().replaceAll("\\s", "");
 			String lstName = ListObject.listPersons.get(iterator).getLastName().replaceAll("\\s", "");
 
-			
-			if(frstName.equalsIgnoreCase(firstName.replaceAll("\\s", "")) && lstName.equalsIgnoreCase(lastName.replace("\\s", ""))) {
-				
+			if (frstName.equalsIgnoreCase(firstName.replaceAll("\\s", ""))
+					&& lstName.equalsIgnoreCase(lastName.replace("\\s", ""))) {
+
 				habitant = new JsonObject();
-				
+
 				habitant.addProperty("firstName", frstName);
 				habitant.addProperty("lastName", lstName);
-				
+
 				String age = dateManager.calculateAge(ListObject.listBirthDate.get(iterator).getBirthDate().toString());
-				
+
 				habitant.addProperty("age", age);
 				habitant.addProperty("mail", ListObject.listPersons.get(iterator).getEmail());
-				habitant.addProperty("medications", ListObject.listMedicalRecords.get(iterator).getMedications().toString());
-				habitant.addProperty("allergies", ListObject.listMedicalRecords.get(iterator).getAllergies().toString());
-				
+				habitant.addProperty("medications",
+						ListObject.listMedicalRecords.get(iterator).getMedications().toString());
+				habitant.addProperty("allergies",
+						ListObject.listMedicalRecords.get(iterator).getAllergies().toString());
+
 				listHab.add(habitant);
-				
+
 			}
-			
+
 			result.add("habitants", JsonParser.parseString(gson.toJson(listHab)).getAsJsonArray());
-			
+
 		}
-		
-		
+
 		return result;
 	}
-	
-	
-	
-	
-	public JsonObject communityEmail(String city) {
-		
-		JsonObject mail;
-		List<Object> listEmail = new ArrayList<>();
-		
-		JsonObject result = new JsonObject();
-		
-		
-		for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
-			
-			String pplCity = ListObject.listPersons.get(iterator).getLocation().getCity().replaceAll("\\s", "");
-			
-				if (pplCity.equalsIgnoreCase(city.replaceAll("\\s", ""))) {
-					
-					mail = new JsonObject();
-					
-					mail.addProperty("email", ListObject.listPersons.get(iterator).getEmail());
-					
-					listEmail.add(mail);
-					
-				}
-				
-				result.add("Emails", JsonParser.parseString(gson.toJson(listEmail)).getAsJsonArray());
-		}
-		
-		return result;
-	}
-	
 	
 	
 	
 
+	public JsonObject communityEmail(String city) {
+
+		JsonObject mail;
+		List<Object> listEmail = new ArrayList<>();
+
+		JsonObject result = new JsonObject();
+
+		for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
+
+			String pplCity = ListObject.listPersons.get(iterator).getLocation().getCity().replaceAll("\\s", "");
+
+			if (pplCity.equalsIgnoreCase(city.replaceAll("\\s", ""))) {
+
+				mail = new JsonObject();
+
+				mail.addProperty("email", ListObject.listPersons.get(iterator).getEmail());
+
+				listEmail.add(mail);
+
+			}
+
+			result.add("Emails", JsonParser.parseString(gson.toJson(listEmail)).getAsJsonArray());
+		}
+
+		return result;
+	}
+
+	
+	
 }

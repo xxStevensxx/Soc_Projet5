@@ -150,7 +150,6 @@ public class ListConstruct {
 				medicalRecord.setAllergies(arrayAllergies);
 				
 				date =  cvrtDate.convertDate(jsonObject.get("birthdate").getAsString());
-//				Period age = cvrtDate.calculateAge(jsonObject.get("birthdate").getAsString());
 
 				birthDate.setBirthDate(date);
 
