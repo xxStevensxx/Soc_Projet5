@@ -1,7 +1,8 @@
 package com.safety.net.services;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import com.safety.net.model.ListObject;
 
 import com.safety.net.model.Persons;
 import com.safety.net.util.DateManager;
+import com.safety.net.util.FilterJcksn;
 
 @Service
 public class DisplayInfo {
@@ -23,38 +25,23 @@ public class DisplayInfo {
 	@Autowired
 	DateManager dateManager;
 
-	Persons persons;
-	String LastName;
-	String firstName;
-	String address;
-	String city;
-	String zip;
-	String phone;
-	String email;
-	int station;
-	String birthDate;
-	String age;
-	int child;
-	int adult;
-	ArrayList<String> allergies;
-	ArrayList<String> medications;
-	
+	@Autowired
+	FilterJcksn filterJcksn;
+
 	
 
-	public JsonObject displayPplNearStation(int id) {
+	public Map<JsonObject, ArrayList<Persons>> displayPplNearStationBis(int id) {
 
-		JsonObject listPplNearFstation = null;
-		List<Object> listPplNearFstationRtrn = new ArrayList<Object>();
+		Map<JsonObject, ArrayList<Persons>> listPplNearFstation = new HashMap<>();
 
-		List<Object> listChild = new ArrayList<>();
-		List<Object> listAdult = new ArrayList<>();
-
-		JsonObject result = new JsonObject();
+		ArrayList<Persons> listPpl = new ArrayList<>();
+		JsonObject listAdutltsAndChild = new JsonObject();
+		ArrayList<Object> adultAndChild = new ArrayList<>();
 
 		String fStationAdr = null;
 
-		child = 0;
-		adult = 0;
+		int child = 0;
+		int adult = 0;
 
 		for (int i = 0; i < ListObject.listFireStations.size(); i++) {
 
@@ -69,107 +56,89 @@ public class DisplayInfo {
 			}
 
 			if (next == true) {
-				
+
 				for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
 
 					if (fStationAdr == ListObject.listPersons.get(iterator).getLocation().getAddress()) {
 
-						listPplNearFstation = new JsonObject();
+						Persons pplNxtStation = new Persons();
 
-						LastName = ListObject.listPersons.get(iterator).getLastName();
-						firstName = ListObject.listPersons.get(iterator).getFirstName();
-						phone = ListObject.listPersons.get(iterator).getPhone();
+						pplNxtStation = ListObject.listPersons.get(iterator);
 
-						birthDate = ListObject.listBirthDate.get(iterator).getBirthDate().toString();
-						age = dateManager.calculateAge(birthDate);
+						listPpl.add(pplNxtStation);
 
-						if (Integer.parseInt(age) <= 18) {
+						if (pplNxtStation.getAge() <= 18) {
 
 							child++;
+
 						} else {
 
 							adult++;
 						}
 
-						address = ListObject.listPersons.get(iterator).getLocation().getAddress();
-						city = ListObject.listPersons.get(iterator).getLocation().getCity();
-						zip = ListObject.listPersons.get(iterator).getLocation().getZip();
-
-						listPplNearFstation.addProperty("firstName", firstName);
-						listPplNearFstation.addProperty("LastName", LastName);
-						listPplNearFstation.addProperty("birthDate", birthDate);
-						listPplNearFstation.addProperty("age", age);
-						listPplNearFstation.addProperty("address", address);
-						listPplNearFstation.addProperty("city", city);
-						listPplNearFstation.addProperty("zip", zip);
-						listPplNearFstation.addProperty("phone", phone);
-
-						listPplNearFstationRtrn.add(listPplNearFstation);
-
 					}
 				}
 			}
-			
-			result.add("Habitants", JsonParser.parseString(gson.toJson(listPplNearFstationRtrn)).getAsJsonArray());
 
 		}
 
-		listAdult.add("adult: " + String.valueOf(adult));
-		listChild.add("child: " + String.valueOf(child));
-		result.addProperty("adult", adult);
-		result.addProperty("child", child);
+		adultAndChild.add("adults: " + adult);
+		adultAndChild.add("childs: " + child);
+		listAdutltsAndChild.add("adultAndChild", JsonParser.parseString(gson.toJson(adultAndChild)).getAsJsonArray());
+		listPplNearFstation.put(listAdutltsAndChild, listPpl);
 
-		return result;
+		return listPplNearFstation;
 	}
 	
 	
 	
 	
 
-	public JsonObject childAlert(String address) {
+	public ArrayList<Persons> childAlert(String address) {
 
-		List<Object> alert = new ArrayList<>();
-		JsonObject result = new JsonObject();
+//		Ajouter les membres de la famille pour respecter la consignes
+
+		Persons ppl;
+		ArrayList<Persons> listPpl = new ArrayList<>();
 
 		String age = null;
 
 		for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
 
-			String adrPpl = ListObject.listPersons.get(iterator).getLocation().getAddress().replaceAll("\\s", "");
+			String adrPpl = ListObject.listPersons.get(iterator).getLocation().getAddress().replaceAll("\\s", "")
+					.toLowerCase();
 			boolean checkAge = false;
 
-			if (address.replaceAll("\\s", "").contains(adrPpl)) {
+			if (address.replaceAll("\\s", "").toLowerCase().contains(adrPpl)) {
 
-				age = dateManager.calculateAge(ListObject.listBirthDate.get(iterator).getBirthDate().toString());
+				age = String.valueOf(ListObject.listPersons.get(iterator).getAge());
 				checkAge = dateManager.underEighteenOrNot(age);
 
 			}
 
 			if (checkAge == true) {
 
-				JsonObject list = new JsonObject();
+				ppl = new Persons();
 
-				list.addProperty("firstName", ListObject.listPersons.get(iterator).getFirstName());
-				list.addProperty("lastName", ListObject.listPersons.get(iterator).getLastName());
-				list.addProperty("age", age);
+				ppl = ListObject.listPersons.get(iterator);
 
-				alert.add(list);
-				result.add("underEighteen", JsonParser.parseString(gson.toJson(alert)).getAsJsonArray());
+				listPpl.add(ppl);
 
 			}
 		}
 
-		return result;
+		return listPpl;
 	}
 	
 	
 	
+	
 
-	public JsonObject phoneAlert(int fireStationNumber) {
+	public ArrayList<Persons> phoneAlert(int fireStationNumber) {
 
 		FireStations fireStAdr = null;
-		JsonObject result = new JsonObject();
-		List<String> personsNumber = new ArrayList<>();
+		ArrayList<Persons> listPersonsNumber = new ArrayList<>();
+		Persons personsNumber;
 
 		for (int iterator = 0; iterator < ListObject.listFireStations.size(); iterator++) {
 
@@ -195,9 +164,12 @@ public class DisplayInfo {
 
 					if (next == true && personAdr.contains(fireStAdr.getAddress().getAddress())) {
 
-						personsNumber.add(ListObject.listPersons.get(i).getPhone());
+						personsNumber = new Persons();
 
-						result.add("phoneNumber", JsonParser.parseString(gson.toJson(personsNumber)).getAsJsonArray());
+						personsNumber = ListObject.listPersons.get(i);
+
+						listPersonsNumber.add(personsNumber);
+
 					}
 
 				}
@@ -205,38 +177,32 @@ public class DisplayInfo {
 
 		}
 
-		return result;
+		return listPersonsNumber;
 	}
 	
 	
 	
+	
 
-	public JsonObject fireAdr(String address) {
+	public Map<ArrayList<Integer>, ArrayList<Persons>> fireAdr(String address) {
 
-		List<Object> listHabitant = new ArrayList<>();
-		List<Object> stationNb = new ArrayList<>();
+		ArrayList<Persons> listHabitant = new ArrayList<>();
+		ArrayList<Integer> listFireNb = new ArrayList<>();
+		Map<ArrayList<Integer>, ArrayList<Persons>> result = new HashMap<>();
 
-		JsonObject result = new JsonObject();
+		Persons habitant;
+		int fireSt;
 
 		for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
 
-			String adrPpl = ListObject.listPersons.get(iterator).getLocation().getAddress().replaceAll("\\s", "");
+			String adrPpl = ListObject.listPersons.get(iterator).getLocation().getAddress().replaceAll("\\s", "")
+					.toLowerCase();
 
-			if (address.replaceAll("\\s", "").contains(adrPpl)) {
+			if (address.replaceAll("\\s", "").toLowerCase().contains(adrPpl)) {
 
-				JsonObject habitant = new JsonObject();
+				habitant = new Persons();
 
-				habitant.addProperty("Nom", ListObject.listPersons.get(iterator).getLastName());
-				habitant.addProperty("phoneNumber", ListObject.listPersons.get(iterator).getPhone());
-
-				String age = dateManager.calculateAge(ListObject.listBirthDate.get(iterator).getBirthDate().toString());
-
-				habitant.addProperty("age", age);
-
-				habitant.addProperty("medications",
-						ListObject.listPersons.get(iterator).getMedicalRecord().getMedications().toString());
-				habitant.addProperty("allergies",
-						ListObject.listPersons.get(iterator).getMedicalRecord().getAllergies().toString());
+				habitant = ListObject.listPersons.get(iterator);
 
 				listHabitant.add(habitant);
 
@@ -244,133 +210,123 @@ public class DisplayInfo {
 
 		}
 
-		for (int iteratorBis = 0; iteratorBis < ListObject.listFireStations.size(); iteratorBis++) {
+		for (int jterator = 0; jterator < ListObject.listFireStations.size(); jterator++) {
 
-			if (address.replaceAll("\\s", "").contains(
-					ListObject.listFireStations.get(iteratorBis).getAddress().getAddress().replaceAll("\\s", ""))) {
+			if (address.replaceAll("\\s", "").toLowerCase().contains(ListObject.listFireStations.get(jterator)
+					.getAddress().getAddress().replaceAll("\\s", "").toLowerCase())) {
 
-				JsonObject StationNb = new JsonObject();
-				String station = String.valueOf(ListObject.listFireStations.get(iteratorBis).getStation());
+				fireSt = ListObject.listFireStations.get(jterator).getStation();
 
-				StationNb.addProperty("number", station);
-
-				stationNb.add(StationNb);
+				listFireNb.add(fireSt);
 
 			}
 		}
 
-		result.add("Habitant", JsonParser.parseString(gson.toJson(listHabitant)).getAsJsonArray());
-		result.add("FireStation", JsonParser.parseString(gson.toJson(stationNb)).getAsJsonArray());
-
+		result.put(listFireNb, listHabitant);
 		return result;
 	}
 	
 	
 	
+	
 
-	public JsonObject flood(int stations) {
-		
+	public ArrayList<Persons> flood(int stations) {
+
+		boolean next;
 		String fStationAdr = null;
-		boolean next = false;
-		JsonObject grpPplAdr;
-		List<Object> listGrpPplAdr = new ArrayList<>();
-		String age;
-		JsonObject result = new JsonObject();
+
+		Persons grpPplAdr;
+		ArrayList<Persons> listGrpPplAdr = new ArrayList<>();
 
 		for (int iterator = 0; iterator < ListObject.listFireStations.size(); iterator++) {
-						
+
+			next = false;
+
 			if (stations == ListObject.listFireStations.get(iterator).getStation()) {
-				
+
 				next = true;
 				fStationAdr = ListObject.listFireStations.get(iterator).getAddress().getAddress();
-				
+
 			}
-		}
-		
-		
-		if(next == true ) {
 
-			for (int jterator = 0; jterator < ListObject.listPersons.size(); jterator++) {
-				
-				if (fStationAdr == ListObject.listPersons.get(jterator).getLocation().getAddress()) {
-					
-					grpPplAdr = new JsonObject();
-					
-					grpPplAdr.addProperty("address", ListObject.listPersons.get(jterator).getLocation().getAddress());
-					grpPplAdr.addProperty("firstName", ListObject.listPersons.get(jterator).getFirstName());
-					grpPplAdr.addProperty("lastName", ListObject.listPersons.get(jterator).getLastName());
-					grpPplAdr.addProperty("phone", ListObject.listPersons.get(jterator).getPhone());
-					
-					age = dateManager.calculateAge(ListObject.listBirthDate.get(jterator).getBirthDate().toString());
-					
-					grpPplAdr.addProperty("age", age);
-					grpPplAdr.addProperty("medications", ListObject.listMedicalRecords.get(jterator).getMedications().toString());
-					grpPplAdr.addProperty("allergies", ListObject.listMedicalRecords.get(jterator).getAllergies().toString());
-					
-					listGrpPplAdr.add(grpPplAdr);
+			if (next == true) {
 
+				for (int jterator = 0; jterator < ListObject.listPersons.size(); jterator++) {
+
+					if (fStationAdr == ListObject.listPersons.get(jterator).getLocation().getAddress()) {
+
+						grpPplAdr = new Persons();
+						grpPplAdr = ListObject.listPersons.get(jterator);
+
+						listGrpPplAdr.add(grpPplAdr);
+
+					}
 				}
 			}
+
 		}
-		
-		result.add("habitant", JsonParser.parseString(gson.toJson(listGrpPplAdr)).getAsJsonArray());
-		
-		
-				return result;
+
+		return listGrpPplAdr;
 	}
 	
 	
 	
+	
 
-	public JsonObject personInfo(String firstName, String lastName) {
+	public ArrayList<Persons> personInfo(String firstName, String lastName) {
 
-		JsonObject result = new JsonObject();
+		Persons habitant;
+		ArrayList<Persons> listHabitant = new ArrayList<>();
+		Persons familly;
 
-		JsonObject habitant;
-		List<Object> listHab = new ArrayList<>();
+		String frstName;
+		String lstName;
 
 		for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
 
-			String frstName = ListObject.listPersons.get(iterator).getFirstName().replaceAll("\\s", "");
-			String lstName = ListObject.listPersons.get(iterator).getLastName().replaceAll("\\s", "");
+			frstName = ListObject.listPersons.get(iterator).getFirstName().replaceAll("\\s", "").toLowerCase();
+			lstName = ListObject.listPersons.get(iterator).getLastName().replaceAll("\\s", "").toLowerCase();
 
-			if (frstName.equalsIgnoreCase(firstName.replaceAll("\\s", ""))
-					&& lstName.equalsIgnoreCase(lastName.replace("\\s", ""))) {
+			if (frstName.equalsIgnoreCase(firstName.replaceAll("\\s", "").toLowerCase())
+					&& lstName.equalsIgnoreCase(lastName.replace("\\s", "").toLowerCase())) {
 
-				habitant = new JsonObject();
-
-				habitant.addProperty("firstName", frstName);
-				habitant.addProperty("lastName", lstName);
-
-				String age = dateManager.calculateAge(ListObject.listBirthDate.get(iterator).getBirthDate().toString());
-
-				habitant.addProperty("age", age);
-				habitant.addProperty("mail", ListObject.listPersons.get(iterator).getEmail());
-				habitant.addProperty("medications",
-						ListObject.listMedicalRecords.get(iterator).getMedications().toString());
-				habitant.addProperty("allergies",
-						ListObject.listMedicalRecords.get(iterator).getAllergies().toString());
-
-				listHab.add(habitant);
+				habitant = ListObject.listPersons.get(iterator);
+				listHabitant.add(habitant);
 
 			}
 
-			result.add("habitants", JsonParser.parseString(gson.toJson(listHab)).getAsJsonArray());
+		}
+
+		/*
+		 * Second tour a partir de zero afin d'ajouter la famille le stream n'est pas la
+		 * bonne solution, il injecte des éléments null
+		 */
+		for (int jterator = 0; jterator < ListObject.listPersons.size(); jterator++) {
+
+			frstName = ListObject.listPersons.get(jterator).getFirstName().replaceAll("\\s", "").toLowerCase();
+			lstName = ListObject.listPersons.get(jterator).getLastName().replaceAll("\\s", "").toLowerCase();
+
+			if (lstName.contains(lastName.replaceAll("\\s", "").toLowerCase())
+					&& !frstName.contains(firstName.replaceAll("\\s", "").toLowerCase())) {
+
+				familly = ListObject.listPersons.get(jterator);
+
+				listHabitant.add(familly);
+			}
 
 		}
 
-		return result;
+		return listHabitant;
 	}
 	
 	
 	
+	
 
-	public JsonObject communityEmail(String city) {
+	public ArrayList<Persons> communityEmail(String city) {
 
-		JsonObject mail;
-		List<Object> listEmail = new ArrayList<>();
-
-		JsonObject result = new JsonObject();
+		Persons pplMail = null;
+		ArrayList<Persons> pplMailList = new ArrayList<>();
 
 		for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
 
@@ -378,20 +334,15 @@ public class DisplayInfo {
 
 			if (pplCity.equalsIgnoreCase(city.replaceAll("\\s", ""))) {
 
-				mail = new JsonObject();
+				pplMail = ListObject.listPersons.get(iterator);
 
-				mail.addProperty("email", ListObject.listPersons.get(iterator).getEmail());
-
-				listEmail.add(mail);
+				pplMailList.add(pplMail);
 
 			}
 
-			result.add("Emails", JsonParser.parseString(gson.toJson(listEmail)).getAsJsonArray());
 		}
 
-		return result;
+		return pplMailList;
 	}
 
-	
-	
 }
