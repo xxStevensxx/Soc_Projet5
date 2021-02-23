@@ -1,6 +1,10 @@
 package com.safety.net.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+
+
+@JsonFilter("filterOnPersons")
 public class Persons {
 	
 	private String firstName;
@@ -10,10 +14,20 @@ public class Persons {
 	private Address location;
 	private MedicalRecords medicalRecord;
 	private BirthDate birthDate;
+	private int age;
 	
 	
 	
 	
+	
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
 	public BirthDate getBirthDate() {
 		return birthDate;
 	}
