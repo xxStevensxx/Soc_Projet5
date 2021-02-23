@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.safety.net.services.DisplayInfo;
 import com.safety.net.services.ListConstruct;
 import com.safety.net.util.FilterJcksn;
@@ -34,62 +33,62 @@ public class PagesController {
 		return "Welcome to Safety Net!";
 	}
 	
-	
-	@RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json" )
-	public  MappingJacksonValue test(){
-		
-		return filterJcksn.pplNearStationFilter(displayInfo.test());
-		
-	}
-
 
 	@RequestMapping(value = "/firestation", method = RequestMethod.GET, produces = "application/json" )
-	public ResponseEntity<String> fireStations (@RequestParam(name = "stationNumber", required = true) int id){
+	public ResponseEntity<MappingJacksonValue> fireStations (@RequestParam(name = "stationNumber", required = true) int id){
 		
-		return new ResponseEntity<>(displayInfo.displayPplNearStation(id).toString(), HttpStatus.OK);
+		return new ResponseEntity<MappingJacksonValue>(filterJcksn.pplNearStationFilter
+				(displayInfo.displayPplNearStationBis(id)), HttpStatus.OK);
 		
 	}
 	
 	@RequestMapping(value = "/childAlert", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<String> childAlert(@RequestParam(name = "address", required = true) String address){
+	public ResponseEntity<MappingJacksonValue> childAlert(@RequestParam(name = "address", required = true) String address){
 		
-		return new ResponseEntity<>(displayInfo.childAlert(address).toString(), HttpStatus.OK);
+		return new ResponseEntity<MappingJacksonValue>(filterJcksn.childAlertFilter
+				(displayInfo.childAlert(address)), HttpStatus.OK);
 		
 	}
 	
 	@RequestMapping(value = "/phoneAlert", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<String> phoneAlert(@RequestParam(name = "firestation", required = true) int fireStationNumber){
+	public ResponseEntity<MappingJacksonValue> phoneAlert(@RequestParam(name = "firestation", required = true) int fireStationNumber){
 		
-		return new ResponseEntity<>(displayInfo.phoneAlert(fireStationNumber).toString(), HttpStatus.OK);
+		return new ResponseEntity<MappingJacksonValue>(filterJcksn.phoneAlertFilter
+				(displayInfo.phoneAlert(fireStationNumber)), HttpStatus.OK);
 		
 	}
 	
 	@RequestMapping(value = "/fire", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<String> fire(@RequestParam(name = "address", required = true) String address){
+	public ResponseEntity<MappingJacksonValue> fire(@RequestParam(name = "address", required = true) String address){
 		
-		return new ResponseEntity<String>(displayInfo.fireAdr(address).toString(), HttpStatus.OK);
+		return new ResponseEntity<MappingJacksonValue>(filterJcksn.fireAdrFilter
+				(displayInfo.fireAdr(address)), HttpStatus.OK);
 
   }
+	
 	@RequestMapping(value = "/flood/stations", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<String> flood(@RequestParam(name = "stations", required = true) int stations){
+	public ResponseEntity<MappingJacksonValue> flood(@RequestParam(name = "stations", required = true) int stations){
 		
-		return new ResponseEntity<String>(displayInfo.flood(stations).toString(), HttpStatus.OK);
+		return new ResponseEntity<MappingJacksonValue>(filterJcksn.floodFilter
+				(displayInfo.flood(stations)), HttpStatus.OK);
 		
 	}
 	
 	@RequestMapping(value = "/personInfo", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<String> personInfo(@RequestParam(name = "firstName", required = true) String firstName, 
+	public ResponseEntity<MappingJacksonValue> personInfo(@RequestParam(name = "firstName", required = true) String firstName, 
 			@RequestParam(name = "lastName", required = true) String lastName){
 		
-		return new ResponseEntity<String>(displayInfo.personInfo(firstName, lastName).toString(), HttpStatus.OK);
+		return new ResponseEntity<MappingJacksonValue>(filterJcksn.personInfoFilter
+				(displayInfo.personInfo(firstName, lastName)), HttpStatus.OK);
 		
 	}
 
 	
 	@RequestMapping(value = "/communityEmail", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<String> communityEmail(@RequestParam(name = "city", required = true) String  city){
+	public ResponseEntity<MappingJacksonValue> communityEmail(@RequestParam(name = "city", required = true) String  city){
 		
-		return new ResponseEntity<String>(displayInfo.communityEmailBis(city).toString(), HttpStatus.OK);
+		return new ResponseEntity<MappingJacksonValue>(filterJcksn.communityEmailFilter
+				(displayInfo.communityEmail(city)),HttpStatus.OK);
 		
 	}
 
