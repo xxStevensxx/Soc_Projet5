@@ -1,5 +1,8 @@
 package com.safety.net.model;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+
+@JsonFilter("filterOnFireStations")
 public class FireStations {
 	
 	public int station;
