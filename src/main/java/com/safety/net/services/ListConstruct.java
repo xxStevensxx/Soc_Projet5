@@ -34,7 +34,7 @@ public class ListConstruct {
 	CheckDuplicateValue checkDuplicateValue;
 
 	@Autowired
-	DateManager cvrtDate;
+	DateManager dateMngr;
 	
 	@Autowired
 	JsonArrToArrString jsArrToArrStr;
@@ -149,12 +149,16 @@ public class ListConstruct {
 				medicalRecord.setMedications(arrayMedic);
 				medicalRecord.setAllergies(arrayAllergies);
 				
-				date =  cvrtDate.convertDate(jsonObject.get("birthdate").getAsString());
+				date =  dateMngr.convertDate(jsonObject.get("birthdate").getAsString());
 
 				birthDate.setBirthDate(date);
 
 				person.setMedicalRecord(medicalRecord);
 				person.setBirthDate(birthDate);
+				
+				String age = dateMngr.calculateAge(date.toString());
+				
+				person.setAge(Integer.parseInt(age));
 
 				ListObject.listBirthDate.add(birthDate);
 				ListObject.listMedicalRecords.add(medicalRecord);
