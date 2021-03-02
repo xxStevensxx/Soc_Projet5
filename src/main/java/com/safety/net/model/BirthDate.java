@@ -4,10 +4,19 @@ import java.time.LocalDate;
 
 public class BirthDate {
 	
+	
+	public BirthDate() {
+		super();
+	}
+	
+	
+	public BirthDate(LocalDate birtDate) {
+		this.birthDate = birtDate;  
+	}
+	
 	private LocalDate birthDate;
 	
 	
-
 	public LocalDate getBirthDate() {
 		return birthDate;
 	}

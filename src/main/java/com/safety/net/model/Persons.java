@@ -1,6 +1,9 @@
 package com.safety.net.model;
 
 
+
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonFilter;
 
 
@@ -13,7 +16,7 @@ public class Persons {
 	private String email;
 	private Address location;
 	private MedicalRecords medicalRecord;
-	private BirthDate birthDate;
+	private LocalDate birthDate;
 	private int age;
 	
 	
@@ -28,11 +31,11 @@ public class Persons {
 		this.age = age;
 	}
 
-	public BirthDate getBirthDate() {
+	public LocalDate getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(BirthDate birthDate) {
+	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 
@@ -82,6 +85,7 @@ public class Persons {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}	
+	}
+
 
 }
