@@ -1,14 +1,13 @@
 package com.safety.net.util;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -18,11 +17,50 @@ import com.safety.net.model.Persons;
 @Component
 @Configuration
 public class FilterJcksn {
+	
+	
+	public MappingJacksonValue genericFilter(List<Persons> gen) {
 
-	public void jacksonConfiguration(ObjectMapper objectMapper) {
+		SimpleBeanPropertyFilter filterOn = SimpleBeanPropertyFilter.serializeAll();
 
-		objectMapper.setFilterProvider(new SimpleFilterProvider().setFailOnUnknownId(false));
+		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("filterOnPersons", filterOn);
 
+		MappingJacksonValue mapJcks = new MappingJacksonValue(gen);
+
+		mapJcks.setFilters(filterProvider);
+
+			
+		return mapJcks;
+	}
+	
+	
+	public MappingJacksonValue filterMsg(String obj) {
+
+		SimpleBeanPropertyFilter filterOn = SimpleBeanPropertyFilter.serializeAll();
+
+		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("filterOnPersons", filterOn);
+
+		MappingJacksonValue mapJcks = new MappingJacksonValue(obj);
+
+		mapJcks.setFilters(filterProvider);
+
+			
+		return mapJcks;
+	}
+	
+
+	public MappingJacksonValue filterCRUD(ArrayList<Persons> obj) {
+
+		SimpleBeanPropertyFilter filterOn = SimpleBeanPropertyFilter.serializeAll();
+
+		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("filterOnPersons", filterOn);
+
+		MappingJacksonValue mapJcks = new MappingJacksonValue(obj);
+
+		mapJcks.setFilters(filterProvider);
+
+			
+		return mapJcks;
 	}
 	
 	
@@ -73,18 +111,7 @@ public class FilterJcksn {
 		return mapJcks;
 	}
 	
-	
 
-	public MappingJacksonValue pplNearStationFilter(Persons view) {
-
-		SimpleBeanPropertyFilter filterOn = SimpleBeanPropertyFilter.serializeAllExcept("medicalRecord");
-		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("filterOnPersons", filterOn);
-		MappingJacksonValue mapJcks = new MappingJacksonValue(view);
-
-		mapJcks.setFilters(filterProvider);
-
-		return mapJcks;
-	}
 
 	public MappingJacksonValue communityEmailFilter(ArrayList<Persons> obj) {
 
@@ -121,6 +148,7 @@ public class FilterJcksn {
 		return mapJcks;
 	}
 	
+	
 	public MappingJacksonValue fireAdrFilter(Map<ArrayList<Integer>, ArrayList<Persons>> map) {
 
 		SimpleBeanPropertyFilter filterOnF = SimpleBeanPropertyFilter.serializeAllExcept("address");
@@ -137,5 +165,6 @@ public class FilterJcksn {
 			
 		return mapJcks;
 	}
+
 
 }

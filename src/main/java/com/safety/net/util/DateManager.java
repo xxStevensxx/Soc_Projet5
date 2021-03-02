@@ -64,4 +64,23 @@ public class DateManager {
 			return result;
 		
 	}
+	
+	
+	
+	public int checkDatNotNull(LocalDate birthDate) {
+		
+		int ageRtrn = 0;
+		
+		if (birthDate != null) {
+			
+			LocalDate date = birthDate;
+			String age = calculateAge(date.toString());
+			
+			 ageRtrn = Integer.parseInt(age);
+			
+		}
+		
+		return ageRtrn;
+		
+	}
 }
