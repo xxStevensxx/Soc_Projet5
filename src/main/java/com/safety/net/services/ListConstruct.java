@@ -3,7 +3,6 @@ package com.safety.net.services;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-//import java.util.Collection;
 
 import javax.annotation.PostConstruct;
 
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.safety.net.model.Address;
-import com.safety.net.model.BirthDate;
 import com.safety.net.model.FireStations;
 import com.safety.net.model.ListObject;
 import com.safety.net.model.MedicalRecords;
@@ -119,7 +117,6 @@ public class ListConstruct {
 		JsonArray jsonArray = jsonFile.getAsJsonArray("medicalrecords");
 
 		Persons person;
-		BirthDate birthDate;
 		MedicalRecords medicalRecord;
 		LocalDate date;
 
@@ -133,10 +130,9 @@ public class ListConstruct {
 			person = checkDuplicateValue.checkPerson(name, lastname);
 			
 
-			if (person.getFirstName() != null && person.getLastName() != null) {
+ 			if (person.getFirstName() != null && person.getLastName() != null) {
 
 				medicalRecord = new MedicalRecords();
-				birthDate = new BirthDate();
 				
 				ArrayList<String> arrayMedic;
 				ArrayList<String> arrayAllergies;
@@ -151,16 +147,14 @@ public class ListConstruct {
 				
 				date =  dateMngr.convertDate(jsonObject.get("birthdate").getAsString());
 
-				birthDate.setBirthDate(date);
 
 				person.setMedicalRecord(medicalRecord);
-				person.setBirthDate(birthDate);
+				person.setBirthDate(date);
 				
 				String age = dateMngr.calculateAge(date.toString());
 				
 				person.setAge(Integer.parseInt(age));
 
-				ListObject.listBirthDate.add(birthDate);
 				ListObject.listMedicalRecords.add(medicalRecord);
 
 
