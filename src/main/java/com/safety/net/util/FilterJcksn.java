@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.google.gson.JsonObject;
+import com.safety.net.model.FireStations;
 import com.safety.net.model.Persons;
 
 @Component
@@ -19,7 +20,7 @@ import com.safety.net.model.Persons;
 public class FilterJcksn {
 	
 	
-	public MappingJacksonValue genericFilter(List<Persons> gen) {
+	public MappingJacksonValue genericFilterPerson(List<Persons> gen) {
 
 		SimpleBeanPropertyFilter filterOn = SimpleBeanPropertyFilter.serializeAll();
 
@@ -32,6 +33,22 @@ public class FilterJcksn {
 			
 		return mapJcks;
 	}
+	
+	
+	public MappingJacksonValue genericFilterFire(List<FireStations> fireStations) {
+
+		SimpleBeanPropertyFilter filterOn = SimpleBeanPropertyFilter.serializeAll();
+
+		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("filterOnFireStations", filterOn);
+
+		MappingJacksonValue mapJcks = new MappingJacksonValue(fireStations);
+
+		mapJcks.setFilters(filterProvider);
+
+			
+		return mapJcks;
+	}
+	
 	
 	
 	public MappingJacksonValue filterMsg(String obj) {
