@@ -24,6 +24,15 @@ public class CentralizedMsg {
 			
 		case 3:
 			return "Utilisateur non trouvé";
+			
+		case 4:
+			return "Ce numero de station existe à cette adresse ";
+			
+		case 5:
+			return "Station non trouvé";
+			
+		case 6:
+			return "veuillez entrer un format  d'adresse correct SVP !";
 
 		default:
 			

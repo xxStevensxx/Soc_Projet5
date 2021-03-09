@@ -1,6 +1,5 @@
 package com.safety.net.util;
 
-
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -9,7 +8,8 @@ import java.awt.image.BufferedImage;
 
 public class AsciiArt {
 
-	public AsciiArt() {}
+	public AsciiArt() {
+	}
 
 	public void drawString(String text, String artChar, Settings settings) {
 		BufferedImage image = getImageIntegerMode(settings.width, settings.height);

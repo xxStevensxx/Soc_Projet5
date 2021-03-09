@@ -75,5 +75,14 @@ public class PersonsServices {
 		return ListObject.listPersons;
 
 	}
+	
+	
+	public Persons removePerson(int iterator) {
+		
+			return	ListObject.listPersons.remove(iterator);
+
+	}
+	
+	
 
 }
