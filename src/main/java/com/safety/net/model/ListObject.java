@@ -10,6 +10,5 @@ public class ListObject {
 	public static List<FireStations> listFireStations = new ArrayList<>();
 	public static List<Address> listAddress = new ArrayList<>();
 	public static List<MedicalRecords> listMedicalRecords = new ArrayList<>();
-	public static List<BirthDate> listBirthDate = new ArrayList<>();
 	
 }
