@@ -51,7 +51,7 @@ public class DisplayInfo {
 			if (id == fStationNb) {
 
 				next = true;
-				fStationAdr = ListObject.listFireStations.get(i).getAddress().getAddress();
+				fStationAdr = ListObject.listFireStations.get(i).getAddress().getAddress().toLowerCase().replaceAll("//s", "");
 
 			}
 
@@ -59,7 +59,7 @@ public class DisplayInfo {
 
 				for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
 
-					if (fStationAdr == ListObject.listPersons.get(iterator).getLocation().getAddress()) {
+					if (fStationAdr.contains(ListObject.listPersons.get(iterator).getLocation().getAddress().toLowerCase().replaceAll("//s", ""))) {
 
 						Persons pplNxtStation = new Persons();
 
@@ -160,9 +160,9 @@ public class DisplayInfo {
 			if (next == true) {
 				for (int i = 0; i < ListObject.listPersons.size(); i++) {
 
-					String personAdr = ListObject.listPersons.get(i).getLocation().getAddress();
+					String personAdr = ListObject.listPersons.get(i).getLocation().getAddress().toLowerCase().replaceAll("//s", "");
 
-					if (next == true && personAdr.contains(fireStAdr.getAddress().getAddress())) {
+					if (next == true && personAdr.contains(fireStAdr.getAddress().getAddress().toLowerCase().replaceAll("//s", ""))) {
 
 						personsNumber = new Persons();
 
@@ -245,7 +245,7 @@ public class DisplayInfo {
 			if (stations == ListObject.listFireStations.get(iterator).getStation()) {
 
 				next = true;
-				fStationAdr = ListObject.listFireStations.get(iterator).getAddress().getAddress();
+				fStationAdr = ListObject.listFireStations.get(iterator).getAddress().getAddress().toLowerCase().replaceAll("//s", "");
 
 			}
 
@@ -253,7 +253,7 @@ public class DisplayInfo {
 
 				for (int jterator = 0; jterator < ListObject.listPersons.size(); jterator++) {
 
-					if (fStationAdr == ListObject.listPersons.get(jterator).getLocation().getAddress()) {
+					if (fStationAdr.contains(ListObject.listPersons.get(jterator).getLocation().getAddress().toLowerCase().replaceAll("//s", ""))) {
 
 						grpPplAdr = new Persons();
 						grpPplAdr = ListObject.listPersons.get(jterator);
