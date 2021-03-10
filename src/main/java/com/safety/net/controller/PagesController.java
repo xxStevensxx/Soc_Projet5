@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.safety.net.services.DisplayApiAscii;
 import com.safety.net.services.DisplayInfo;
 import com.safety.net.services.ListConstruct;
 import com.safety.net.util.FilterJcksn;
@@ -22,9 +21,6 @@ public class PagesController {
 	@Autowired
 	DisplayInfo displayInfo;
 	
-	@Autowired
-	DisplayApiAscii displayAScii;
-
 	@Autowired
 	ListConstruct listConstruct;
 	

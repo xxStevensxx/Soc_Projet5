@@ -66,21 +66,31 @@ public class DateManager {
 	}
 	
 	
-	
-	public int checkDatNotNull(LocalDate birthDate) {
+	public LocalDate convertStringToDate(String sDate) {
 		
-		int ageRtrn = 0;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/d/yyyy");
 		
-		if (birthDate != null) {
-			
-			LocalDate date = birthDate;
-			String age = calculateAge(date.toString());
-			
-			 ageRtrn = Integer.parseInt(age);
-			
-		}
-		
-		return ageRtrn;
-		
+		LocalDate date  = LocalDate.parse(sDate, formatter);
+
+			return date;
 	}
+	
+	
+//	
+//	public int checkDatNotNull(LocalDate birthDate) {
+//		
+//		int ageRtrn = 0;
+//		
+//		if (birthDate != null) {
+//			
+//			LocalDate date = birthDate;
+//			String age = calculateAge(date.toString());
+//			
+//			 ageRtrn = Integer.parseInt(age);
+//			
+//		}
+//		
+//		return ageRtrn;
+//		
+//	}
 }

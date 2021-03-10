@@ -1,5 +1,6 @@
 package com.safety.net.services;
 
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +15,10 @@ import com.safety.net.model.FireStations;
 import com.safety.net.model.ListObject;
 
 import com.safety.net.model.Persons;
+import com.safety.net.util.AsciiArt;
 import com.safety.net.util.DateManager;
 import com.safety.net.util.FilterJcksn;
+import com.safety.net.util.AsciiArt.Settings;
 
 @Service
 public class DisplayInfo {
@@ -343,6 +346,19 @@ public class DisplayInfo {
 		}
 
 		return pplMailList;
+	}
+	
+	
+	public void displayAscii() {
+		
+		String text = "safetyNet";
+	    AsciiArt asciiArt = new AsciiArt();
+		Settings settings = asciiArt.new Settings(new Font("SansSerif", Font.ITALIC, 24), text.length() * 15, 30);
+		
+		asciiArt.drawString(text, "*",  settings);
+		
+		
+		
 	}
 
 }

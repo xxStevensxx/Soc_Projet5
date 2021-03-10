@@ -17,8 +17,8 @@ import com.safety.net.model.ListObject;
 import com.safety.net.model.MedicalRecords;
 import com.safety.net.model.Persons;
 import com.safety.net.util.CheckDuplicateValue;
+import com.safety.net.util.Convertor;
 import com.safety.net.util.DateManager;
-import com.safety.net.util.JsonArrToArrString;
 
 @Service
 public class ListConstruct {
@@ -35,7 +35,7 @@ public class ListConstruct {
 	DateManager dateMngr;
 	
 	@Autowired
-	JsonArrToArrString jsArrToArrStr;
+	Convertor convert;
 	
 	String adr;
 	String city;
@@ -138,8 +138,8 @@ public class ListConstruct {
 				ArrayList<String> arrayAllergies;
 
 				
-				arrayMedic = jsArrToArrStr.arrlistStr(jsonObject.get("medications").getAsJsonArray());
-				arrayAllergies = jsArrToArrStr.arrlistStr(jsonObject.get("allergies").getAsJsonArray());
+				arrayMedic = convert.jsonToArrlistStr(jsonObject.get("medications").getAsJsonArray());
+				arrayAllergies = convert.jsonToArrlistStr(jsonObject.get("allergies").getAsJsonArray());
 
 								
 				medicalRecord.setMedications(arrayMedic);

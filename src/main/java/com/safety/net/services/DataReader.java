@@ -3,7 +3,6 @@ package com.safety.net.services;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-
 import org.springframework.stereotype.Component;
 
 import com.google.gson.JsonIOException;

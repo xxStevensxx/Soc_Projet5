@@ -1,0 +1,112 @@
+{"properties": [
+  {
+    "name": "property.directoryname",
+    "type": "java.lang.String",
+    "description": "A description for 'property.directoryname'"
+  },
+  {
+    "name": "name",
+    "type": "java.lang.String",
+    "description": "A description for 'name'"
+  },
+  {
+    "name": "appender.console.type",
+    "type": "java.lang.String",
+    "description": "A description for 'appender.console.type'"
+  },
+  {
+    "name": "appender.console.name",
+    "type": "java.lang.String",
+    "description": "A description for 'appender.console.name'"
+  },
+  {
+    "name": "appender.console.layout.type",
+    "type": "java.lang.String",
+    "description": "A description for 'appender.console.layout.type'"
+  },
+  {
+    "name": "appender.console.layout.pattern",
+    "type": "java.lang.String",
+    "description": "A description for 'appender.console.layout.pattern'"
+  },
+  {
+    "name": "appender.file.type",
+    "type": "java.lang.String",
+    "description": "A description for 'appender.file.type'"
+  },
+  {
+    "name": "appender.file.filename",
+    "type": "java.lang.String",
+    "description": "A description for 'appender.file.filename'"
+  },
+  {
+    "name": "appender.file.name",
+    "type": "java.lang.String",
+    "description": "A description for 'appender.file.name'"
+  },
+  {
+    "name": "appender.file.layout.type",
+    "type": "java.lang.String",
+    "description": "A description for 'appender.file.layout.type'"
+  },
+  {
+    "name": "rootLogger.level",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLogger.level'"
+  },
+  {
+    "name": "rootLogger.appenderRef.stdout.ref",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLogger.appenderRef.stdout.ref'"
+  },
+  {
+    "name": "rootLogger.appenderRef.file.ref",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLogger.appenderRef.file.ref'"
+  },
+  {
+    "name": "appender.file.layout.pattern",
+    "type": "java.lang.String",
+    "description": "A description for 'appender.file.layout.pattern'"
+  },
+  {
+    "name": "rootLogger.level",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLogger.level'"
+  },
+  {
+    "name": "rootLogger.level",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLogger.level'"
+  },
+  {
+    "name": "rootLoggerLevel",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLoggerLevel'"
+  },
+  {
+    "name": "rootLoggerLevel",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLoggerLevel'"
+  },
+  {
+    "name": "rootLoggerLevel",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLoggerLevel'"
+  },
+  {
+    "name": "rootLoggerLevel",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLoggerLevel'"
+  },
+  {
+    "name": "rootLoggerLevel",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLoggerLevel'"
+  },
+  {
+    "name": "rootLoggerLevel",
+    "type": "java.lang.String",
+    "description": "A description for 'rootLoggerLevel'"
+  }
+]}

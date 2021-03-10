@@ -16,25 +16,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.safety.net.model.Address;
 import com.safety.net.model.FireStations;
 import com.safety.net.model.ListObject;
-import com.safety.net.services.AddressServices;
-import com.safety.net.services.FireStationsServices;
+import com.safety.net.services.ServicesCRUD;
 import com.safety.net.util.CentralizedMsg;
 import com.safety.net.util.FilterJcksn;
 
 @RestController
 public class FireStationsController {
 
-	@Autowired
-	FireStationsServices fireStationServices;
-
-	@Autowired
-	AddressServices adrServices;
 
 	@Autowired
 	FilterJcksn filterJcksn;
 
 	@Autowired
 	CentralizedMsg msg;
+	
+	@Autowired
+	ServicesCRUD crud;
 
 	ArrayList<FireStations> fireStations;
 	boolean existe;
@@ -82,12 +79,12 @@ public class FireStationsController {
 
 			if (fireStation.getAddress() != null) {
 
-				adrServices.addAddress(fireStation.getAddress());
+				crud.addAddress(fireStation.getAddress());
 
 			}
 
-			fireStationServices.addFireStations(fireStation);
-			adrServices.addAddress(fireStation.getAddress());
+			crud.addFireStations(fireStation);
+			crud.addAddress(fireStation.getAddress());
 
 			fireStations.add(fireStation);
 
@@ -132,7 +129,7 @@ public class FireStationsController {
 			if (adrIsNull == false && station == stationList
 					&& address.toLowerCase().replaceAll("//s", "").contains(fireAdr)) {
 
-				fireStationServices.updateFireStation(fireStation, iterator);
+				crud.updateFireStation(fireStation, iterator);
 
 				return new ResponseEntity<MappingJacksonValue>(
 						filterJcksn.genericFilterFire(ListObject.listFireStations), HttpStatus.OK);
@@ -161,7 +158,7 @@ public class FireStationsController {
 
 			if (stationIterator == station && adrIterator.contains(address.toLowerCase().replaceAll("\\s", ""))) {
 
-				fireStationServices.removeFireStation(iterator);
+				crud.removeFireStation(iterator);
 
 				return new ResponseEntity<MappingJacksonValue>(filterJcksn.genericFilterFire(ListObject.listFireStations),
 						HttpStatus.ACCEPTED);

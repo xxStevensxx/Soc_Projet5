@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.safety.net.model.ListObject;
 import com.safety.net.model.Persons;
-import com.safety.net.services.AddressServices;
-import com.safety.net.services.PersonsServices;
+import com.safety.net.services.ServicesCRUD;
 import com.safety.net.util.CentralizedMsg;
 import com.safety.net.util.DateManager;
 import com.safety.net.util.FilterJcksn;
@@ -25,17 +24,16 @@ import com.safety.net.util.FilterJcksn;
 @RestController
 public class PersonsController {
 
-	@Autowired
-	PersonsServices personServices;
 
-	@Autowired
-	AddressServices adrServices;
 
 	@Autowired
 	FilterJcksn filterJcksn;
 
 	@Autowired
 	CentralizedMsg msg;
+	
+	@Autowired
+	ServicesCRUD crud;
 
 	@Autowired
 	DateManager dateManager;
@@ -97,9 +95,9 @@ public class PersonsController {
 
 			}
 
-			personServices.addPerson(person);
+			crud.addPerson(person);
 
-			adrServices.addAddress(person.getLocation());
+			crud.addAddress(person.getLocation());
 
 			persons.add(person);
 		}
@@ -169,11 +167,7 @@ public class PersonsController {
 			if (firstName.contains(frstName.toLowerCase().replaceAll("\\s", ""))
 					&& lastName.contains(lstName.toLowerCase().replaceAll("\\s", ""))) {
 
-//				personUpdate = new Persons();
-//
-//				personUpdate = ListObject.listPersons.get(i);
-				
-				personServices.updatePerson(person, i);
+				crud.updatePerson(person, i);
 
 				return new ResponseEntity<MappingJacksonValue>(filterJcksn.genericFilterPerson(ListObject.listPersons),
 						HttpStatus.OK);
@@ -209,7 +203,7 @@ public class PersonsController {
 					&& lastName.contains(lstName.toLowerCase().replaceAll("\\s", ""))) {
 				
 				
-				personServices.removePerson(iterator);
+				crud.removePerson(iterator);
 
 
 				return new ResponseEntity<MappingJacksonValue>(filterJcksn.genericFilterPerson(ListObject.listPersons),

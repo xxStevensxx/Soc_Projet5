@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 public class AsciiArt {
 
 	public AsciiArt() {
+		
 	}
 
 	public void drawString(String text, String artChar, Settings settings) {
