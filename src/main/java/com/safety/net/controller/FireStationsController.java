@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.safety.net.SafetyNetApplication;
 import com.safety.net.model.Address;
 import com.safety.net.model.FireStations;
 import com.safety.net.model.ListObject;
@@ -53,8 +54,9 @@ public class FireStationsController {
 			if (fireStation.getAddress().getAddress() == null || fireStation.getAddress().getCity() == null
 					|| fireStation.getAddress().getZip() == null) {
 
-				return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(6)),
-						HttpStatus.BAD_REQUEST);
+				SafetyNetApplication.LOG.info(11);
+					return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(6)),
+							HttpStatus.BAD_REQUEST);
 
 			} else {
 
@@ -64,12 +66,13 @@ public class FireStationsController {
 			}
 
 			if (fireStation.getStation() == fireStations.get(iterator).getStation()
-					&& fireStation.getAddress().getAddress().toLowerCase().replaceAll("//s", "").contains(fireAdr)) {
+					&& fireStation.getAddress().getAddress().toLowerCase().replaceAll("\\s","").contains(fireAdr)) {
 
 				existe = true;
-
-				return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(4)),
-						HttpStatus.CONFLICT);
+				
+				SafetyNetApplication.LOG.info(msg.logManager(10));
+					return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(4)),
+							HttpStatus.CONFLICT);
 
 			}
 
@@ -98,6 +101,7 @@ public class FireStationsController {
 	@RequestMapping(value = "/AllFireStations", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<MappingJacksonValue> readAllFireStations() {
 
+		SafetyNetApplication.LOG.info(msg.logManager(7));
 		return new ResponseEntity<MappingJacksonValue>(filterJcksn.genericFilterFire(ListObject.listFireStations),
 				HttpStatus.FOUND);
 
@@ -117,7 +121,7 @@ public class FireStationsController {
 			fireStations = new ArrayList<>();
 			fireStations.add(ListObject.listFireStations.get(iterator));
 
-			fireAdr = ListObject.listFireStations.get(iterator).getAddress().getAddress().toLowerCase();
+			fireAdr = ListObject.listFireStations.get(iterator).getAddress().getAddress().toLowerCase().replaceAll("\\s", "");
 			stationList = ListObject.listFireStations.get(iterator).getStation();
 
 			if (address == null || address.isEmpty()) {
@@ -127,7 +131,7 @@ public class FireStationsController {
 			}
 
 			if (adrIsNull == false && station == stationList
-					&& address.toLowerCase().replaceAll("//s", "").contains(fireAdr)) {
+					&& address.toLowerCase().replaceAll("\\s", "").contains(fireAdr)) {
 
 				crud.updateFireStation(fireStation, iterator);
 
@@ -136,27 +140,28 @@ public class FireStationsController {
 
 			}
 		}
-
-		return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(5)), HttpStatus.NOT_FOUND);
+		
+		SafetyNetApplication.LOG.info(msg.logManager(5));
+			return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(5)), HttpStatus.NOT_FOUND);
 
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/deleteFireStation", method = RequestMethod.DELETE, produces = "application/json")
-	public ResponseEntity<MappingJacksonValue> deletePersons(
+	public ResponseEntity<MappingJacksonValue> deleteFireStation(
 			@RequestParam(name = "station", required = true) int station,
 			@RequestParam(name = "address", required = true) String address) {
 
-		for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
+		for (int iterator = 0; iterator < ListObject.listFireStations.size(); iterator++) {
 
 			fireStations = new ArrayList<>();
 
 			fireStations.add(ListObject.listFireStations.get(iterator));
 
 			int stationIterator = ListObject.listFireStations.get(iterator).getStation();
-			String adrIterator = ListObject.listFireStations.get(iterator).getAddress().getAddress().toLowerCase();
+			String adrIterator = ListObject.listFireStations.get(iterator).getAddress().getAddress().toLowerCase().replaceAll("\\s","");
 
-			if (stationIterator == station && adrIterator.contains(address.toLowerCase().replaceAll("\\s", ""))) {
+			if (stationIterator == station && adrIterator.contains(address.toLowerCase().replaceAll("\\s",""))) {
 
 				crud.removeFireStation(iterator);
 
@@ -166,8 +171,9 @@ public class FireStationsController {
 			}
 
 		}
-
-		return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(5)), HttpStatus.NOT_FOUND);
+		
+		SafetyNetApplication.LOG.info(msg.logManager(6));
+			return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(5)), HttpStatus.NOT_FOUND);
 
 	}
 

@@ -101,7 +101,8 @@ public class DisplayInfo {
 
 //		Ajouter les membres de la famille pour respecter la consignes
 
-		Persons ppl;
+		Persons ppl = null;
+		Persons pplFamilly;
 		ArrayList<Persons> listPpl = new ArrayList<>();
 
 		String age = null;
@@ -110,6 +111,7 @@ public class DisplayInfo {
 
 			String adrPpl = ListObject.listPersons.get(iterator).getLocation().getAddress().replaceAll("\\s", "")
 					.toLowerCase();
+			
 			boolean checkAge = false;
 
 			if (address.replaceAll("\\s", "").toLowerCase().contains(adrPpl)) {
@@ -129,8 +131,25 @@ public class DisplayInfo {
 
 			}
 		}
-
-		return listPpl;
+		
+		for (int jterator = 0; jterator < ListObject.listPersons.size(); jterator++) {
+			
+			String ageFamilly = String.valueOf(ListObject.listPersons.get(jterator).getAge());
+			boolean checkAgeFamilly = dateManager.underEighteenOrNot(ageFamilly);
+			
+			
+			if (checkAgeFamilly == false && ListObject.listPersons.get(jterator).getLastName().contains(ppl.getLastName())) {
+				
+				pplFamilly = new Persons();
+				
+				pplFamilly = ListObject.listPersons.get(jterator);
+				listPpl.add(pplFamilly);
+				
+			}
+			
+		}
+		
+			return listPpl;
 	}
 	
 	

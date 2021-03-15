@@ -6,10 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.safety.net.SafetyNetApplication;
 import com.safety.net.model.Address;
 import com.safety.net.model.FireStations;
 import com.safety.net.model.ListObject;
 import com.safety.net.model.Persons;
+import com.safety.net.util.CentralizedMsg;
 import com.safety.net.util.DateManager;
 
 @Component
@@ -18,13 +20,18 @@ public class ServicesCRUD {
 	@Autowired
 	DateManager dateManager;
 	
+	@Autowired
+	CentralizedMsg msg;
+	
 	
 	
 //	************************** Services Persons ****************************
 	
 	public boolean addPerson(Persons person) {
 
-		return ListObject.listPersons.add(person);
+		SafetyNetApplication.LOG.info(msg.logManager(0));
+		
+			return ListObject.listPersons.add(person);
 
 	}
 
@@ -76,13 +83,17 @@ public class ServicesCRUD {
 			ListObject.listPersons.get(iterator).setBirthDate(person.getBirthDate());
 
 		}
-
-		return ListObject.listPersons;
+		
+		SafetyNetApplication.LOG.info(ListObject.listPersons.get(iterator).getFirstName() + msg.logManager(1));
+		
+			return ListObject.listPersons;
 
 	}
 	
 	
 	public Persons removePerson(int iterator) {
+		
+		SafetyNetApplication.LOG.info(ListObject.listPersons.get(iterator).getFirstName() + msg.logManager(2));
 		
 			return	ListObject.listPersons.remove(iterator);
 
@@ -95,8 +106,10 @@ public class ServicesCRUD {
 
 	
 	public boolean addFireStations(FireStations fireStation) {
+		
+		SafetyNetApplication.LOG.info(msg.logManager(3));
 
-		return ListObject.listFireStations.add(fireStation);
+			return ListObject.listFireStations.add(fireStation);
 
 	}
 	
@@ -111,9 +124,10 @@ public class ServicesCRUD {
 				
 			}
 				
+		SafetyNetApplication.LOG.info(" La station de pompier N* : " + ListObject.listFireStations.get(iterator).getStation() +
+				" à L'adresse :  " + ListObject.listFireStations.get(iterator).getAddress().getAddress() + msg.logManager(1));
 
-
-		return ListObject.listFireStations;
+			return ListObject.listFireStations;
 		
 	}
 	
@@ -121,7 +135,10 @@ public class ServicesCRUD {
 	
 	public FireStations removeFireStation(int iterator) {
 		
-		return	ListObject.listFireStations.remove(iterator);
+		SafetyNetApplication.LOG.info("La station de pompier N* : " + ListObject.listFireStations.get(iterator).getStation() +
+				" à l'adresse : " + ListObject.listFireStations.get(iterator).getAddress().getAddress() + msg.logManager(2));
+		
+			return	ListObject.listFireStations.remove(iterator);
 
 }
 	
@@ -131,8 +148,10 @@ public class ServicesCRUD {
 	
 
 	public boolean addAddress(Address address) {
-
-		return ListObject.listAddress.add(address);
+		
+		SafetyNetApplication.LOG.info(msg.logManager(4));
+		
+			return ListObject.listAddress.add(address);
 
 	}
 

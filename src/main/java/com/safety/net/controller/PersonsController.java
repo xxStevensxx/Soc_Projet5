@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.safety.net.SafetyNetApplication;
 import com.safety.net.model.ListObject;
 import com.safety.net.model.Persons;
 import com.safety.net.services.ServicesCRUD;
@@ -66,17 +67,19 @@ public class PersonsController {
 			lastName = ListObject.listPersons.get(i).getLastName().toLowerCase();
 			email = ListObject.listPersons.get(i).getEmail().toLowerCase();
 
-			if (firstName.contains(person.getFirstName().toLowerCase().replaceAll("//s", ""))
-					&& lastName.contains(person.getLastName().toLowerCase().replaceAll("//s", ""))) {
+			if (firstName.contains(person.getFirstName().toLowerCase().replaceAll("\\s", ""))
+					&& lastName.contains(person.getLastName().toLowerCase().replaceAll("\\s", ""))) {
 
 				existe = true;
-				return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(1)),
+				SafetyNetApplication.LOG.info(msg.logManager(12) + firstName + " " + lastName);
+					return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(1)),
 						HttpStatus.CONFLICT);
 
-			} else if (email.contains(person.getEmail().toLowerCase().replaceAll("//s", ""))) {
+			} else if (email.contains(person.getEmail().toLowerCase().replaceAll("\\s", ""))) {
 
 				existe = true;
-				return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(2)),
+				SafetyNetApplication.LOG.info(msg.logManager(13) + email);
+					return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(2)),
 						HttpStatus.CONFLICT);
 
 			}
@@ -109,8 +112,9 @@ public class PersonsController {
 	@ResponseBody
 	@RequestMapping(value = "/AllPersons", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<MappingJacksonValue> readAllPersons() {
-
-		return new ResponseEntity<MappingJacksonValue>(filterJcksn.genericFilterPerson(ListObject.listPersons),
+		
+		SafetyNetApplication.LOG.info(msg.logManager(14));
+			return new ResponseEntity<MappingJacksonValue>(filterJcksn.genericFilterPerson(ListObject.listPersons),
 				HttpStatus.FOUND);
 
 	}
@@ -129,17 +133,19 @@ public class PersonsController {
 		for (int i = 0; i < ListObject.listPersons.size(); i++) {
 
 			if (ListObject.listPersons.get(i).getFirstName().toLowerCase()
-					.equals(frstName.toLowerCase().replaceAll("//s", ""))) {
+					.equals(frstName.toLowerCase().replaceAll("\\s", ""))) {
 
 				persons.add(ListObject.listPersons.get(i));
 
-				return new ResponseEntity<MappingJacksonValue>(filterJcksn.genericFilterPerson(persons), HttpStatus.FOUND);
-
+				SafetyNetApplication.LOG.info(msg.logManager(15) + ListObject.listPersons.get(i).getFirstName() + " " + 
+						ListObject.listPersons.get(i).getLastName());
+					return new ResponseEntity<MappingJacksonValue>(filterJcksn.genericFilterPerson(persons), HttpStatus.FOUND);
+				
 			}
 
 		}
-
-		return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(3)), HttpStatus.NOT_FOUND);
+			SafetyNetApplication.LOG.info(msg.msgManager(3));
+				return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(3)), HttpStatus.NOT_FOUND);
 
 	}
 	
@@ -175,8 +181,9 @@ public class PersonsController {
 			}
 
 		}
-
-		return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(3)), HttpStatus.NOT_FOUND);
+		
+		SafetyNetApplication.LOG.info(msg.logManager(8));
+			return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(3)), HttpStatus.NOT_FOUND);
 
 	}
 	
@@ -212,8 +219,9 @@ public class PersonsController {
 			}
 
 		}
-
-		return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(3)), HttpStatus.NOT_FOUND);
+		
+		SafetyNetApplication.LOG.info(msg.msgManager(3));
+			return new ResponseEntity<MappingJacksonValue>(filterJcksn.filterMsg(msg.msgManager(3)), HttpStatus.NOT_FOUND);
 
 	}
 

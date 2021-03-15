@@ -44,8 +44,9 @@ public class ListConstruct {
 	boolean resultOfChkDuplicateVle = false;
 
 	
+	
 	public void constructPerson() {
-
+		
 		JsonArray jsonArray = jsonFile.getAsJsonArray("persons");
 
 		for (int iterator = 0; iterator < jsonArray.size(); iterator++) {
@@ -84,7 +85,6 @@ public class ListConstruct {
 
 	}
 	
-	
 
 	public void constructFireStations() {
 
@@ -109,7 +109,6 @@ public class ListConstruct {
 		}
 
 	}
-	
 	
 	
 	public void constructMedicalRecords(){
@@ -172,6 +171,7 @@ public class ListConstruct {
 
 	}
 
+	
 	@PostConstruct
 	public void callAllConstruct(){
 		jsonFile = dtr.readFile("src/main/resources/data.json");

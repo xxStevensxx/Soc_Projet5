@@ -24,9 +24,13 @@ public class SafetyNetApplication {
 	@Autowired
 	DisplayInfo displayApiAscii;
 	
-//	private final static Logger LOG =  LogManager.getLogger(SafetyNetApplication.class.getName());
+	
+	public final static Logger LOG =  LogManager.getLogger(SafetyNetApplication.class.getName());
+
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
 		SpringApplication.run(SafetyNetApplication.class, args);
+		
+		
 		
 //        System.out.println( "Hello World!" );
 //        LOG.debug("This is a debug statement");
@@ -35,7 +39,7 @@ public class SafetyNetApplication {
 //        LOG.error("This is Error Log");
 //        LOG.trace("This is trace Log");
 //        LOG.fatal("This is Fatal Log");
-//		
+		
 		
 	}
 	
