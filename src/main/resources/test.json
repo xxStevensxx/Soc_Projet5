@@ -1,7 +1,69 @@
+
+
 {
-    "person": [
-        { "firstName":"Stevens", "lastName":"Tavares", "address":"Danton", "city":"Draveil", "zip":"91210", "phone":"841-874-6512", "email":"st@email.com" }
-   ]
+	"persons": [
+		{
+			"firstName": "quiGon",
+			"lastName": "jinn",
+			"address": "jedi st",
+			"city": "coruscant",
+			"zip": "1111",
+			"phone": "123-456-7890",
+			"email": "jedi@email.com"
+		},
+		{
+			"firstName": "test",
+			"lastName": "test",
+			"address": "1509 Culver St",
+			"city": "testCity",
+			"zip": "0000",
+			"phone": "123-456-7890",
+			"email": "test@email.com"
+		},
+		{
+			"firstName": "test2",
+			"lastName": "test2",
+			"address": "testAdrSt",
+			"city": "testCity",
+			"zip": "0000",
+			"phone": "231-456-7890",
+			"email": "test2@email.com"
+		},
+		{
+			"firstName": "dark",
+			"lastName": "Vador",
+			"address": "deathStartSt",
+			"city": "tatooine",
+			"zip": "0000",
+			"phone": "841-874-6512",
+			"email": "sith@email.com"
+		},
+		{
+		"firstName": "darth",
+			"lastName": "sidious",
+			"address": "deathStartSt",
+			"city": "naboo",
+			"zip": "0000",
+			"phone": "841-874-6512",
+			"email": "palpatine@email.com"
+		}
+	], 
+    "firestations": [
+		{ "address":"1509 Culver St", "station":"3" },
+        { "address":"deathStartSt", "station":"2" },
+        { "address":"jedi st", "station":"3" },
+        { "address":"jedi st", "station":"1" },
+        { "address":"deathStartSt", "station":"3" },
+        { "address":"testAdrSt", "station":"4" },
+        { "address":"Coruscant", "station":"4" }
+        
+        ],
+        
+    "medicalrecords": [
+        { "firstName":"quiGon", "lastName":"jinn", "birthdate":"03/06/1984", "medications":["aznol:350mg", "hydrapermazol:100mg"], "allergies":["nillacilan"] },
+        { "firstName":"test", "lastName":"test", "birthdate":"03/06/1989", "medications":["pharmacol:5000mg", "terazine:10mg", "noznazol:250mg"], "allergies":[] },
+        { "firstName":"test2", "lastName":"test2", "birthdate":"02/18/2012", "medications":[], "allergies":["peanut"] },
+        { "firstName":"dark", "lastName":"Vador", "birthdate":"09/06/2017", "medications":[], "allergies":[] },
+        { "firstName":"darth", "lastName":"sidious","birthdate":"01/08/1986", "medications":["tetracyclaz:650mg"], "allergies":["xilliathal"] }
+        ]
 }
-
-
