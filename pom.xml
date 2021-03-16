@@ -14,11 +14,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SafetyNet</name>
 	<description>SafetyNet app</description>
-
 	<properties>
 		<java.version>11</java.version>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -81,6 +79,18 @@
 			<artifactId>maven-assembly-plugin</artifactId>
 			<version>3.3.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -120,5 +130,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

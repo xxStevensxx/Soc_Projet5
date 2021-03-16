@@ -15,11 +15,14 @@ import org.springframework.context.annotation.ComponentScan;
 import com.safety.net.services.DisplayInfo;
 import com.sun.el.parser.ParseException;
 
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@EnableSwagger2
 @ComponentScan
 @SpringBootApplication
 public class SafetyNetApplication {
 	
-
+	
 	@Autowired
 	DisplayInfo displayApiAscii;
 	
@@ -29,9 +32,7 @@ public class SafetyNetApplication {
 	public static void main(String[] args) throws FileNotFoundException, IOException, ParseException {
 		SpringApplication.run(SafetyNetApplication.class, args);
 		
-		
-		
-//        System.out.println( "Hello World!" );
+			
 //        LOG.debug("This is a debug statement");
 //        LOG.info("This is Info Log");
 //        LOG.warn("This is Warn Log");
