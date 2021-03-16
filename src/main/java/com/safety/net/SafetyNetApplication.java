@@ -15,9 +15,8 @@ import org.springframework.context.annotation.ComponentScan;
 import com.safety.net.services.DisplayInfo;
 import com.sun.el.parser.ParseException;
 
-
-@SpringBootApplication
 @ComponentScan
+@SpringBootApplication
 public class SafetyNetApplication {
 	
 
