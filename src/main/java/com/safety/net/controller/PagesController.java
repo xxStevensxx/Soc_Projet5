@@ -3,6 +3,7 @@ package com.safety.net.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -15,6 +16,9 @@ import com.safety.net.services.DisplayInfo;
 import com.safety.net.services.ListConstruct;
 import com.safety.net.util.FilterJcksn;
 
+import springfox.documentation.annotations.ApiIgnore;
+
+@ApiIgnore
 @RestController
 public class PagesController {
 
