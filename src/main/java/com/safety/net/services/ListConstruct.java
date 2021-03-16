@@ -2,7 +2,7 @@ package com.safety.net.services;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -24,6 +24,11 @@ import com.safety.net.util.DateManager;
 public class ListConstruct {
 
 	JsonObject jsonFile;
+	
+	List<Address> listAdr = ListObject.listAddress;
+	List<Persons> listPers = ListObject.listPersons;
+	List<FireStations> listFir = ListObject.listFireStations;
+	List<MedicalRecords> listMed = ListObject.listMedicalRecords;
 
 	@Autowired
 	DataReader dtr;
@@ -71,7 +76,7 @@ public class ListConstruct {
 
 				person.setLocation(address);
 				
-				ListObject.listAddress.add(address);
+				listAdr.add(address);
 
 			} else {
 
@@ -79,7 +84,7 @@ public class ListConstruct {
 
 			}
 
-			ListObject.listPersons.add(person);
+			listPers.add(person);
 
 		}
 
@@ -97,14 +102,14 @@ public class ListConstruct {
 
 			FireStations firestation = new FireStations();
 
-			address = ListObject.listAddress.stream()
+			address = listAdr.stream()
 					.filter(predicate -> predicate.getAddress().equals(jsonObject.get("address").getAsString()))
 					.findAny().orElse(null);
 
 			firestation.setStation(jsonObject.get("station").getAsInt());
 			firestation.setAddress(address);
 
-			ListObject.listFireStations.add(firestation);
+			listFir.add(firestation);
 
 		}
 
@@ -154,7 +159,7 @@ public class ListConstruct {
 				
 				person.setAge(Integer.parseInt(age));
 
-				ListObject.listMedicalRecords.add(medicalRecord);
+				listMed.add(medicalRecord);
 
 
 			} else {
