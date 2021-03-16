@@ -17,7 +17,7 @@ public class ReadFileTest {
 	DataReader dataReaderTest = new DataReader();
 	
 	
-	@Test
+//	@Test
 	public void readPersons() throws FileNotFoundException, IOException {
 		
 		JsonObject actual = null;

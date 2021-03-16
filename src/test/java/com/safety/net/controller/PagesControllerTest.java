@@ -1,52 +1,118 @@
 package com.safety.net.controller;
 
-import org.junit.jupiter.api.BeforeAll;
-//import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.springframework.context.ApplicationContext;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
-//import org.springframework.test.context.ContextConfiguration;
-import org.springframework.web.servlet.HandlerAdapter;
-//import org.springframework.web.servlet.ModelAndView;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import jdk.jfr.Name;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 
-
+@SpringBootTest
+@AutoConfigureMockMvc
 public class PagesControllerTest {
 	
-	@InjectMocks
-	private ApplicationContext applicationContext;
 	
-	private MockHttpServletRequest request;
-	private MockHttpServletResponse response;
-	private HandlerAdapter handlerAdaptater;
-	private PagesController pagesController;
+	@Autowired
+	private MockMvc mockMvc;
 	
-	@BeforeAll
-	public void setUp() {
-		request = new MockHttpServletRequest();
-		response = new MockHttpServletResponse();
-		handlerAdaptater = applicationContext.getBean(HandlerAdapter.class);
-		pagesController = new PagesController();
-	}
-
-//	@Test
-	@Name("Test du controller pour la redirection vers les données de l'utilisateurs")
-	public void homeTest() throws Exception {
+	
+	@Test
+	public void firestationsTest() throws Exception {
 		
-		//GIVEN
-		request.setRequestURI("/");
-//		final ModelAndView modelAndView = handlerAdaptater.handle(request, response, pagesController);
 		
 		//WHEN
 		
+		//GIVEN
 		
 		//THEN
-		/*
-		 * assertViewName(modelAndView, null);
-		 * assertAndReturnModelAttributeOfType(modelAndView, "image", Image.class);
-		 */
+		mockMvc.perform(get("/firestation").param("stationNumber", "2")).andExpect(status().isOk());
 		
 	}
+	
+	
+	@Test
+	public void childAlertTest() throws Exception {
+		
+		
+		//WHEN
+		
+		//GIVEN
+		
+		//THEN
+		mockMvc.perform(get("/childAlert").param("address", "1509 Culver St")).andExpect(status().isOk());
+		
+	}
+	
+	@Test
+	public void phoneAlertTest() throws Exception {
+		
+		
+		//WHEN
+		
+		//GIVEN
+		
+		//THEN
+		mockMvc.perform(get("/phoneAlert").param("firestation", "2")).andExpect(status().isOk());
+		
+	}
+	
+	@Test
+	public void fireTest() throws Exception {
+		
+		
+		//WHEN
+		
+		//GIVEN
+		
+		//THEN
+		mockMvc.perform(get("/fire").param("address", "1509 Culver St")).andExpect(status().isOk());
+		
+	}
+	
+	@Test
+	public void floodTest() throws Exception {
+		
+		
+		//WHEN
+		
+		//GIVEN
+		
+		//THEN
+		mockMvc.perform(get("/flood/stations").param("stations", "2")).andExpect(status().isOk());
+		
+	}
+	
+	@Test
+	public void personInfoTest() throws Exception {
+		
+		
+		//WHEN
+		
+		//GIVEN
+		
+		//THEN
+		mockMvc.perform(get("/personInfo").param("firstName", "John").param("lastName", "Boyd")).andExpect(status().isOk());
+		
+	}
+	
+	@Test
+	public void communityEmailTest() throws Exception {
+		
+		
+		//WHEN
+		
+		//GIVEN
+		
+		//THEN
+		mockMvc.perform(get("/communityEmail").param("city", "Culver")).andExpect(status().isOk());
+		
+	}
+	
+	
+	
+	
+	
+	
 }

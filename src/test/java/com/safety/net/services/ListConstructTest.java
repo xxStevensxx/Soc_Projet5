@@ -2,46 +2,83 @@ package com.safety.net.services;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.junit.jupiter.api.Test;
-
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.safety.net.model.ListObject;
-import com.safety.net.model.Persons;
+
+import com.safety.net.model.ListObjectTest;
+import com.safety.net.util.CheckDuplicateValue;
 
 public class ListConstructTest {
 
-	DataReader dataReaderTest = new DataReader();
-	ListObject listObject = new ListObject();
+	DataReader dtrTest = new DataReader();
 
-	@Test
-	public void constructPersonsTest() throws FileNotFoundException, IOException {
+	CheckDuplicateValue checkDuplicateValue = new CheckDuplicateValue();
 
-		// WHEN
-		String actual = null;
-		JsonObject jsonFile = dataReaderTest.readFile("src/main/resources/data.json");
-		JsonArray jsonArray = jsonFile.getAsJsonArray("persons");
+	ListConstruct listConstruct = new ListConstruct();
+	
 
-		// GIVEN
-		for (int iterator = 0; iterator < jsonArray.size(); iterator++) {
-			Persons person = new Persons();
-			JsonObject jsonObject = jsonArray.get(iterator).getAsJsonObject();
+	@BeforeEach
+	public void init() {
 
-			person.setFirstName(jsonObject.get("firstName").getAsString());
-		 	ListObject.listPersons.add(person);
-		 	
-					
-			actual = person.getFirstName();
-
-		}
-		
-		
-		// THEN
-		assertEquals("Eric", actual);
+		JsonObject jsonFile = dtrTest.readFile("src/main/resources/test.json");
+		listConstruct.jsonFile = jsonFile;
+		listConstruct.listPers = ListObjectTest.listPersonsTest;
+		listConstruct.listFir = ListObjectTest.listFireStationsTest;
+		listConstruct.listMed = ListObjectTest.listMedicalRecordsTest;
+		listConstruct.checkDuplicateValue = checkDuplicateValue;
 
 	}
+	
+	
+
+//	@Test
+	public void constructPersonsTest() {
+
+		// WHEN
+		listConstruct.constructPerson();
+		int expected = ListObjectTest.listPersonsTest.size();
+
+		// GIVEN
+
+		// THEN
+		assertEquals(expected, 5);
+
+	}
+
+//	@Test
+	public void constructFireStationTest() {
+		
+		//WHEN
+		listConstruct.constructFireStations();
+		int expected = ListObjectTest.listFireStationsTest.size();
+		
+		
+		//GIVEN
+		
+		
+		//THEN
+		assertEquals(expected, 7);
+
+		
+	} 
+	
+	
+//	@Test
+	public void constructMedicalRecordTest() {
+		
+		//WHEN
+		listConstruct.constructMedicalRecords();
+		int expected = ListObjectTest.listMedicalRecordsTest.size();
+		
+		
+		//GIVEN
+		
+		
+		//THEN
+		assertEquals(expected, 5);
+
+		
+	} 
 
 }

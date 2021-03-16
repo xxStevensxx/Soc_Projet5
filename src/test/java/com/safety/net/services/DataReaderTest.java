@@ -22,7 +22,7 @@ public class DataReaderTest {
 	DataReader dataReader = new DataReader();
 
 	
-	@Test
+//	@Test
 	@Name("Method visant à tester le contenu du fichier json")
 	public void readFileTestContent () throws FileNotFoundException, IOException, ParseException, URISyntaxException {
 
@@ -43,7 +43,7 @@ public class DataReaderTest {
 	}
 	
 
-	@Test
+//	@Test
 	@Name("Method visant à tester si le fichier json n'est pas vide ")
 	public void readFileTestIsEmpty () throws FileNotFoundException, IOException {
 
