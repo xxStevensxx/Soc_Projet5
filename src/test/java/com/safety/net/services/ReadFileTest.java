@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import com.google.gson.JsonArray;
@@ -34,6 +33,7 @@ public class ReadFileTest {
 				
 			actual = jsonObject;
 		}
+		
 		
 		//THEN
 		assertThat(expected.toString().contains(actual.toString()));

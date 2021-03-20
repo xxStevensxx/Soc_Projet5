@@ -2,6 +2,8 @@ package com.safety.net.controller;
 
 
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
@@ -73,7 +75,7 @@ public class PagesController {
   }
 	
 	@RequestMapping(value = "/flood/stations", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<MappingJacksonValue> flood(@RequestParam(name = "stations", required = true) int stations){
+	public ResponseEntity<MappingJacksonValue> flood(@RequestParam(name = "stations", required = true) ArrayList<Integer> stations){
 		
 		return new ResponseEntity<MappingJacksonValue>(filterJcksn.floodFilter
 				(displayInfo.flood(stations)), HttpStatus.OK);

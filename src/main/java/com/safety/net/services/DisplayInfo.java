@@ -3,6 +3,7 @@ package com.safety.net.services;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,8 @@ import com.safety.net.model.FireStations;
 import com.safety.net.model.ListObject;
 
 import com.safety.net.model.Persons;
-import com.safety.net.util.AsciiArt;
 import com.safety.net.util.DateManager;
 import com.safety.net.util.FilterJcksn;
-import com.safety.net.util.AsciiArt.Settings;
 
 @Service
 public class DisplayInfo {
@@ -30,8 +29,6 @@ public class DisplayInfo {
 
 	@Autowired
 	FilterJcksn filterJcksn;
-	
-	
 
 	public Map<JsonObject, ArrayList<Persons>> displayPplNearStationBis(int id) {
 
@@ -54,7 +51,8 @@ public class DisplayInfo {
 			if (id == fStationNb) {
 
 				next = true;
-				fStationAdr = ListObject.listFireStations.get(i).getAddress().getAddress().toLowerCase().replaceAll("//s", "");
+				fStationAdr = ListObject.listFireStations.get(i).getAddress().getAddress().toLowerCase()
+						.replaceAll("//s", "");
 
 			}
 
@@ -62,7 +60,8 @@ public class DisplayInfo {
 
 				for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
 
-					if (fStationAdr.contains(ListObject.listPersons.get(iterator).getLocation().getAddress().toLowerCase().replaceAll("//s", ""))) {
+					if (fStationAdr.contains(ListObject.listPersons.get(iterator).getLocation().getAddress()
+							.toLowerCase().replaceAll("//s", ""))) {
 
 						Persons pplNxtStation = new Persons();
 
@@ -92,10 +91,6 @@ public class DisplayInfo {
 
 		return listPplNearFstation;
 	}
-	
-	
-	
-	
 
 	public ArrayList<Persons> childAlert(String address) {
 
@@ -111,7 +106,7 @@ public class DisplayInfo {
 
 			String adrPpl = ListObject.listPersons.get(iterator).getLocation().getAddress().replaceAll("\\s", "")
 					.toLowerCase();
-			
+
 			boolean checkAge = false;
 
 			if (address.replaceAll("\\s", "").toLowerCase().contains(adrPpl)) {
@@ -131,30 +126,26 @@ public class DisplayInfo {
 
 			}
 		}
-		
+
 		for (int jterator = 0; jterator < ListObject.listPersons.size(); jterator++) {
-			
+
 			String ageFamilly = String.valueOf(ListObject.listPersons.get(jterator).getAge());
 			boolean checkAgeFamilly = dateManager.underEighteenOrNot(ageFamilly);
-			
-			
-			if (checkAgeFamilly == false && ListObject.listPersons.get(jterator).getLastName().contains(ppl.getLastName())) {
-				
+
+			if (checkAgeFamilly == false
+					&& ListObject.listPersons.get(jterator).getLastName().contains(ppl.getLastName())) {
+
 				pplFamilly = new Persons();
-				
+
 				pplFamilly = ListObject.listPersons.get(jterator);
 				listPpl.add(pplFamilly);
-				
+
 			}
-			
+
 		}
-		
-			return listPpl;
+
+		return listPpl;
 	}
-	
-	
-	
-	
 
 	public ArrayList<Persons> phoneAlert(int fireStationNumber) {
 
@@ -182,9 +173,11 @@ public class DisplayInfo {
 			if (next == true) {
 				for (int i = 0; i < ListObject.listPersons.size(); i++) {
 
-					String personAdr = ListObject.listPersons.get(i).getLocation().getAddress().toLowerCase().replaceAll("//s", "");
+					String personAdr = ListObject.listPersons.get(i).getLocation().getAddress().toLowerCase()
+							.replaceAll("//s", "");
 
-					if (next == true && personAdr.contains(fireStAdr.getAddress().getAddress().toLowerCase().replaceAll("//s", ""))) {
+					if (next == true && personAdr
+							.contains(fireStAdr.getAddress().getAddress().toLowerCase().replaceAll("//s", ""))) {
 
 						personsNumber = new Persons();
 
@@ -201,10 +194,6 @@ public class DisplayInfo {
 
 		return listPersonsNumber;
 	}
-	
-	
-	
-	
 
 	public Map<ArrayList<Integer>, ArrayList<Persons>> fireAdr(String address) {
 
@@ -247,53 +236,54 @@ public class DisplayInfo {
 		result.put(listFireNb, listHabitant);
 		return result;
 	}
-	
-	
-	
-	
 
-	public ArrayList<Persons> flood(int stations) {
+	public HashSet<Persons> flood(ArrayList<Integer> stations) {
 
 		boolean next;
-		String fStationAdr = null;
+		ArrayList<String> fStationAdr = new ArrayList<>();
 
-		Persons grpPplAdr;
-		ArrayList<Persons> listGrpPplAdr = new ArrayList<>();
+		Persons grpPplAdr = null;
+		HashSet<Persons> listGrpPplAdr = new HashSet<>();
 
-		for (int iterator = 0; iterator < ListObject.listFireStations.size(); iterator++) {
+		for (int i = 0; i < stations.size(); i++) {
 
 			next = false;
+			for (int iterator = 0; iterator < ListObject.listFireStations.size(); iterator++) {
 
-			if (stations == ListObject.listFireStations.get(iterator).getStation()) {
+				if (stations.get(i) == ListObject.listFireStations.get(iterator).getStation()) {
 
-				next = true;
-				fStationAdr = ListObject.listFireStations.get(iterator).getAddress().getAddress().toLowerCase().replaceAll("//s", "");
+					next = true;
+					fStationAdr.add(ListObject.listFireStations.get(iterator).getAddress().getAddress().toLowerCase()
+							.replaceAll("//s", ""));
 
+				}
 			}
 
 			if (next == true) {
 
 				for (int jterator = 0; jterator < ListObject.listPersons.size(); jterator++) {
 
-					if (fStationAdr.contains(ListObject.listPersons.get(jterator).getLocation().getAddress().toLowerCase().replaceAll("//s", ""))) {
+					for (String fAdr : fStationAdr) {
 
-						grpPplAdr = new Persons();
-						grpPplAdr = ListObject.listPersons.get(jterator);
+						if (fAdr.contains(ListObject.listPersons.get(jterator).getLocation().getAddress().toLowerCase()
+								.replaceAll("//s", ""))) {
 
-						listGrpPplAdr.add(grpPplAdr);
+							grpPplAdr = new Persons();
+							
+							grpPplAdr = ListObject.listPersons.get(jterator);
+							listGrpPplAdr.add(grpPplAdr);
+
+						}
 
 					}
+
 				}
 			}
 
 		}
-
+		 
 		return listGrpPplAdr;
 	}
-	
-	
-	
-	
 
 	public ArrayList<Persons> personInfo(String firstName, String lastName) {
 
@@ -340,10 +330,6 @@ public class DisplayInfo {
 
 		return listHabitant;
 	}
-	
-	
-	
-	
 
 	public ArrayList<Persons> communityEmail(String city) {
 
@@ -365,19 +351,6 @@ public class DisplayInfo {
 		}
 
 		return pplMailList;
-	}
-	
-	
-	public void displayAscii() {
-		
-		String text = "safetyNet";
-	    AsciiArt asciiArt = new AsciiArt();
-		Settings settings = asciiArt.new Settings(new Font("SansSerif", Font.ITALIC, 24), text.length() * 15, 30);
-		
-		asciiArt.drawString(text, "*",  settings);
-		
-		
-		
 	}
 
 }
