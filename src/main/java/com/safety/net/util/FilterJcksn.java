@@ -1,6 +1,7 @@
 package com.safety.net.util;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -156,11 +157,11 @@ public class FilterJcksn {
 	}
 	
 	
-	public MappingJacksonValue floodFilter(ArrayList<Persons> obj) {
+	public MappingJacksonValue floodFilter(HashSet<Persons> hashSet) {
 
 		SimpleBeanPropertyFilter filterOn = SimpleBeanPropertyFilter.serializeAll();
 		FilterProvider filterProvider = new SimpleFilterProvider().addFilter("filterOnPersons", filterOn);
-		MappingJacksonValue mapJcks = new MappingJacksonValue(obj);
+		MappingJacksonValue mapJcks = new MappingJacksonValue(hashSet);
 
 		mapJcks.setFilters(filterProvider);
 
