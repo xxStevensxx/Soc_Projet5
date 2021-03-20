@@ -3,7 +3,6 @@ package com.safety.net;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.annotation.PostConstruct;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,9 +42,5 @@ public class SafetyNetApplication {
 		
 	}
 	
-	@PostConstruct
-	public void asciiSysOut() {
-		displayApiAscii.displayAscii();
-	}
 
 }
