@@ -296,11 +296,11 @@ public class DisplayInfo {
 
 		for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
 
-			frstName = ListObject.listPersons.get(iterator).getFirstName().replaceAll("\\s", "").toLowerCase();
-			lstName = ListObject.listPersons.get(iterator).getLastName().replaceAll("\\s", "").toLowerCase();
+			frstName = ListObject.listPersons.get(iterator).getFirstName().toLowerCase().replaceAll("\\s", "");
+			lstName = ListObject.listPersons.get(iterator).getLastName().toLowerCase().replaceAll("\\s", "");
 
-			if (frstName.equalsIgnoreCase(firstName.replaceAll("\\s", "").toLowerCase())
-					&& lstName.equalsIgnoreCase(lastName.replace("\\s", "").toLowerCase())) {
+			if (frstName.equalsIgnoreCase(firstName.toLowerCase().replaceAll("\\s", ""))
+					&& lstName.equalsIgnoreCase(lastName.toLowerCase().replaceAll("\\s", ""))) {
 
 				habitant = ListObject.listPersons.get(iterator);
 				listHabitant.add(habitant);
