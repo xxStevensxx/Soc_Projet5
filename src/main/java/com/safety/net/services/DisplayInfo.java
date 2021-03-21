@@ -99,7 +99,6 @@ public class DisplayInfo {
 		Persons ppl = null;
 		Persons pplFamilly;
 		ArrayList<Persons> listPpl = new ArrayList<>();
-
 		String age = null;
 
 		for (int iterator = 0; iterator < ListObject.listPersons.size(); iterator++) {
@@ -119,33 +118,34 @@ public class DisplayInfo {
 			if (checkAge == true) {
 
 				ppl = new Persons();
-
 				ppl = ListObject.listPersons.get(iterator);
-
 				listPpl.add(ppl);
+				
+				for (int jterator = 0; jterator < ListObject.listPersons.size(); jterator++) {
 
+					String ageFamilly = String.valueOf(ListObject.listPersons.get(jterator).getAge());
+					boolean checkAgeFamilly = dateManager.underEighteenOrNot(ageFamilly);
+
+					if (checkAgeFamilly == false
+							&& ListObject.listPersons.get(jterator).getLastName().contains(ppl.getLastName())) {
+
+						pplFamilly = new Persons();
+
+						pplFamilly = ListObject.listPersons.get(jterator);
+						listPpl.add(pplFamilly);
+
+					}
+
+				}
 			}
+			
 		}
 
-		for (int jterator = 0; jterator < ListObject.listPersons.size(); jterator++) {
 
-			String ageFamilly = String.valueOf(ListObject.listPersons.get(jterator).getAge());
-			boolean checkAgeFamilly = dateManager.underEighteenOrNot(ageFamilly);
-
-			if (checkAgeFamilly == false
-					&& ListObject.listPersons.get(jterator).getLastName().contains(ppl.getLastName())) {
-
-				pplFamilly = new Persons();
-
-				pplFamilly = ListObject.listPersons.get(jterator);
-				listPpl.add(pplFamilly);
-
-			}
-
-		}
 
 		return listPpl;
 	}
+	
 
 	public ArrayList<Persons> phoneAlert(int fireStationNumber) {
 
