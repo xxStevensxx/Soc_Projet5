@@ -132,7 +132,7 @@ public class PersonsController {
 
 		for (int i = 0; i < ListObject.listPersons.size(); i++) {
 
-			if (ListObject.listPersons.get(i).getFirstName().toLowerCase()
+			if (ListObject.listPersons.get(i).getFirstName().toLowerCase().replaceAll("\\s", "")
 					.equals(frstName.toLowerCase().replaceAll("\\s", ""))) {
 
 				persons.add(ListObject.listPersons.get(i));
@@ -164,9 +164,9 @@ public class PersonsController {
 
 			persons.add(ListObject.listPersons.get(i));
 
-			firstName = ListObject.listPersons.get(i).getFirstName().toLowerCase();
-			lastName = ListObject.listPersons.get(i).getLastName().toLowerCase();
-			email = ListObject.listPersons.get(i).getEmail().toLowerCase();
+			firstName = ListObject.listPersons.get(i).getFirstName().toLowerCase().replaceAll("\\s", "");
+			lastName = ListObject.listPersons.get(i).getLastName().toLowerCase().replaceAll("\\s", "");
+			email = ListObject.listPersons.get(i).getEmail().toLowerCase().replaceAll("\\s", "");
 
 	
 
@@ -203,8 +203,8 @@ public class PersonsController {
 
 			persons.add(ListObject.listPersons.get(iterator));
 
-			firstName = ListObject.listPersons.get(iterator).getFirstName().toLowerCase();
-			lastName = ListObject.listPersons.get(iterator).getLastName().toLowerCase();
+			firstName = ListObject.listPersons.get(iterator).getFirstName().toLowerCase().replaceAll("\\s", "");
+			lastName = ListObject.listPersons.get(iterator).getLastName().toLowerCase().replaceAll("\\s", "");
 
 			if (firstName.contains(frstName.toLowerCase().replaceAll("\\s", ""))
 					&& lastName.contains(lstName.toLowerCase().replaceAll("\\s", ""))) {
